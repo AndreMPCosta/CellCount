@@ -1,0 +1,84 @@
+#:import license license
+
+#:import Toolbar kivymd.toolbar.Toolbar
+#:import ThemeManager kivymd.theming.ThemeManager
+#:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
+#:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
+#:import NavigationDrawerDivider kivymd.navigationdrawer.NavigationDrawerDivider
+#:import NavigationDrawerToolbar kivymd.navigationdrawer.NavigationDrawerToolbar
+#:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
+#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
+#:import MDThemePicker kivymd.theme_picker.MDThemePicker
+#:import MDLabel kivymd.label
+
+
+CellCountRoot:
+    id: main_layout
+    NavDrawer:
+        id: nav_drawer
+    BoxLayout:
+        orientation: 'vertical'
+        id: main_box
+        Toolbar:
+            id: toolbar
+            title: 'CellCount'
+            md_bg_color: app.theme_cls.primary_color
+            background_palette: 'Primary'
+            background_hue: '500'
+            left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
+            right_action_items: [['dots-vertical', lambda x: self.dots_menu.open(self.ids.right_actions)]]
+        ScreenManagement:
+            id: scr_mngr
+
+<NavDrawer>:
+    id: nav_drawer
+    NavigationDrawerToolbar:
+        title: "Navigation Drawer"
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Current Session"
+        on_release: app.root.ids.scr_mngr.current = 'current_session'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Stored Results"
+        on_release: app.root.ids.scr_mngr.current = 'results'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Themes"
+        on_release: app.root.ids.scr_mngr.current = 'theming'
+
+<ScreenManagement>:
+    Screen:
+        name: 'theming'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(80)
+            center_y: self.parent.center_y
+            MDRaisedButton:
+                size_hint: None, None
+                size: 3 * dp(48), dp(48)
+                center_x: self.parent.center_x
+                text: 'Change theme'
+                on_release: MDThemePicker().open()
+                opposite_colors: True
+                pos_hint: {'center_x': 0.5}
+            MDLabel:
+                text: "Current: " + app.theme_cls.theme_style + ", " + app.theme_cls.primary_palette
+                theme_text_color: 'Primary'
+                pos_hint: {'center_x': 0.5}
+                halign: 'center'
+
+
+<ShowLicense>:
+    link_label: link_label
+    size_hint: .8, .8
+    MDLabel:
+        id: link_label
+        font_style: 'Body1'
+        theme_text_color: 'Primary'
+        valign: 'top'
+        pos: root.x, root.y
+        text_size: self.width, None
+        size_hint_y: None
+        height: self.texture_size[1]
