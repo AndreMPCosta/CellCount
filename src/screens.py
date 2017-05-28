@@ -2,7 +2,8 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 from kivy.clock import Clock
-from kivymd.tabs import MDTab
+from kivymd.tabs import MDTab, MDTabHeader
+from kivymd.label import MDLabel
 
 from config import group_cells
 
@@ -31,8 +32,21 @@ class Pickspace(Screen):
         #print x,y
         #print self.tab_panel.width
         #print self.ids['tab_panel'].ids
-        print [type(widget) for widget in self.walk()]
-        print dir(self.ids['tab_panel'])
+        a = [widget for widget in self.walk()]
+        print a
+        for i in xrange(0, len(a)-1):
+            print type(a[i])
+            if type(a[i]) == MDLabel:
+                print str(i) + " " + a[i].text
+            if type(a[i]) == MDTabHeader:
+                print str(i) + " " + a[i].text
+        a[13].width = 50
+        #a[14].width = 20
+        #a[15].width = 30
+        print a[13].width
+        print a[14].width
+        print a[15].width
+        print self.tab_panel.ids
 
 
 class ScreenManagement(ScreenManager):
