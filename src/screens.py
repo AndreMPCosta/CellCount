@@ -40,7 +40,7 @@ class Pickspace(Screen):
                 print str(i) + " " + a[i].text
             if type(a[i]) == MDTabHeader:
                 print str(i) + " " + a[i].text
-        a[13].width = 50
+        #a[13].width = 50
         #a[14].width = 20
         #a[15].width = 30
         print a[13].width
