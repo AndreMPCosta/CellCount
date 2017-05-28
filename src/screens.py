@@ -1,13 +1,50 @@
-from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.metrics import dp
-from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition, SlideTransition
-from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.properties import ObjectProperty
+from kivy.clock import Clock
+from kivymd.tabs import MDTab
+
+from config import group_cells
+
+class Workspace(Screen):
+    def __init__(self, **kwargs):
+        super(Workspace, self).__init__(**kwargs)
+        pass
+
+class Theming(Screen):
+    def __init__(self, **kwargs):
+        super(Theming, self).__init__(**kwargs)
+        pass
+
+class Pickspace(Screen):
+    tab_panel = ObjectProperty()
+    def __init__(self, **kwargs):
+        super(Pickspace, self).__init__(**kwargs)
+        for group in group_cells:
+            tab = MDTab(name=group.lower(), text=group, id=group.lower())
+            #TODO create items in tab
+            #tab.add_widget()
+            self.tab_panel.add_widget(tab)
+        self.tab_panel.bind(width=self.print_width)
+
+    def print_width(self,x,y):
+        #print x,y
+        #print self.tab_panel.width
+        #print self.ids['tab_panel'].ids
+        print [type(widget) for widget in self.walk()]
+        print dir(self.ids['tab_panel'])
+
 
 class ScreenManagement(ScreenManager):
     def __init__(self, **kwargs):
         super(ScreenManagement, self).__init__(**kwargs)
-        # self.transition = SlideTransition()
+        screens = {'theming': Theming(),
+                   'pickspace': Pickspace()}
+        #self.transition = FallOutTransition()
+        self.add_widget(Workspace())
+        for screen in screens.values():
+            print screen
+            self.add_widget(screen)
         # print Window
         # if platform == 'android':
         #     import android

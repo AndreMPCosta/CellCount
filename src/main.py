@@ -1,6 +1,8 @@
 from kivy.app import App
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.animation import Animation
+from kivy.metrics import dp
+from kivy.clock import Clock
 
 from kivymd.menu import MDDropdownMenu
 from kivymd.dialog import MDDialog
@@ -9,19 +11,16 @@ from kivymd.navigationdrawer import MDNavigationDrawer, NavigationLayout
 import kivymd.material_resources as m_res
 
 from license import license
-from screens import Window, Clock, dp
+from screens import *
 
 class CellCount(App):
     theme_cls = ThemeManager()
     title = "CellCount"
 
-    # def build(self):
-    #     self.root = CellCountRoot()
-    #     return self.root
-
 
 class NavDrawer(MDNavigationDrawer):
     pass
+
 
 class CellCountRoot(NavigationLayout):
     dots_menu = ObjectProperty()
@@ -43,12 +42,12 @@ class ShowLicense(MDDialog):
         super(ShowLicense, self).__init__(**kwargs)
         self.title = "License Information"
         self.link_label.text = license
-        #print license
         #self.content.bind(size=self.link_label.setter('text_size'))
 
     def custom_open(self, menu):
         menu.dismiss()
         self.open()
+
 
 class DotsMenu(MDDropdownMenu):
     def __init__(self, root, **kwargs):

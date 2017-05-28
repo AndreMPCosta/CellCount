@@ -10,6 +10,7 @@
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 #:import MDThemePicker kivymd.theme_picker.MDThemePicker
 #:import MDLabel kivymd.label
+#:import MDTabbedPanel kivymd.tabs.MDTabbedPanel
 
 
 CellCountRoot:
@@ -37,7 +38,7 @@ CellCountRoot:
     NavigationDrawerIconButton:
         icon: 'checkbox-blank-circle'
         text: "Current Session"
-        on_release: app.root.ids.scr_mngr.current = 'current_session'
+        on_release: app.root.ids.scr_mngr.current = 'workspace'
     NavigationDrawerIconButton:
         icon: 'checkbox-blank-circle'
         text: "Stored Results"
@@ -48,26 +49,27 @@ CellCountRoot:
         on_release: app.root.ids.scr_mngr.current = 'theming'
 
 <ScreenManagement>:
-    Screen:
-        name: 'theming'
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint_y: None
-            height: dp(80)
-            center_y: self.parent.center_y
-            MDRaisedButton:
-                size_hint: None, None
-                size: 3 * dp(48), dp(48)
-                center_x: self.parent.center_x
-                text: 'Change theme'
-                on_release: MDThemePicker().open()
-                opposite_colors: True
-                pos_hint: {'center_x': 0.5}
-            MDLabel:
-                text: "Current: " + app.theme_cls.theme_style + ", " + app.theme_cls.primary_palette
-                theme_text_color: 'Primary'
-                pos_hint: {'center_x': 0.5}
-                halign: 'center'
+#    Workspace:
+#    Screen:
+#        name: 'theming'
+#        BoxLayout:
+#            orientation: 'vertical'
+#            size_hint_y: None
+#            height: dp(80)
+#            center_y: self.parent.center_y
+#            MDRaisedButton:
+#                size_hint: None, None
+#                size: 3 * dp(48), dp(48)
+#                center_x: self.parent.center_x
+#                text: 'Change theme'
+#                on_release: MDThemePicker().open()
+#                opposite_colors: True
+#                pos_hint: {'center_x': 0.5}
+#            MDLabel:
+#                text: "Current: " + app.theme_cls.theme_style + ", " + app.theme_cls.primary_palette
+#                theme_text_color: 'Primary'
+#                pos_hint: {'center_x': 0.5}
+#                halign: 'center'
 
 
 <ShowLicense>:
@@ -82,3 +84,52 @@ CellCountRoot:
         text_size: self.width, None
         size_hint_y: None
         height: self.texture_size[1]
+
+
+<Workspace>:
+    name: 'workspace'
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: None
+        height: dp(80)
+        center_y: self.parent.center_y
+        MDLabel:
+            text: "Empty Workspace"
+            theme_text_color: 'Primary'
+            pos_hint: {'center_x': 0.5}
+            halign: 'center'
+    MDFloatingActionButton:
+        id: add_cells
+        icon: 'plus'
+        opposite_colors: True
+        elevation_normal: 8
+        pos_hint: {'center_x': 0.85, 'center_y': 0.1}
+        on_release: app.root.ids.scr_mngr.current = 'pickspace'
+
+<Theming>:
+    name: 'theming'
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: None
+        height: dp(80)
+        center_y: self.parent.center_y
+        MDRaisedButton:
+            size_hint: None, None
+            size: 3 * dp(48), dp(48)
+            center_x: self.parent.center_x
+            text: 'Change theme'
+            on_release: MDThemePicker().open()
+            opposite_colors: True
+            pos_hint: {'center_x': 0.5}
+        MDLabel:
+            text: "Current: " + app.theme_cls.theme_style + ", " + app.theme_cls.primary_palette
+            theme_text_color: 'Primary'
+            pos_hint: {'center_x': 0.5}
+            halign: 'center'
+
+<Pickspace>:
+    tab_panel: tab_panel
+    name: 'pickspace'
+    MDTabbedPanel:
+        id: tab_panel
+        tab_display_mode:'text'
