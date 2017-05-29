@@ -3,6 +3,7 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.animation import Animation
 from kivy.metrics import dp
 from kivy.clock import Clock
+from kivy.lang import Builder
 
 from kivymd.menu import MDDropdownMenu
 from kivymd.dialog import MDDialog
@@ -16,6 +17,9 @@ from screens import *
 class CellCount(App):
     theme_cls = ThemeManager()
     title = "CellCount"
+
+    # def build(self):
+    #     Builder.load_file('cell_count.kv')
 
 
 class NavDrawer(MDNavigationDrawer):

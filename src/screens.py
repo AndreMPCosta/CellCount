@@ -1,11 +1,23 @@
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
-from kivy.clock import Clock
-from kivymd.tabs import MDTab, MDTabHeader
+from kivy.metrics import dp
+from kivy.clock import Clock, mainthread
+
+from kivymd.button import MDRaisedButton
 from kivymd.label import MDLabel
+from kivymd.list import IRightBody
+from kivymd.selectioncontrols import MDCheckbox
+
+from functools import partial
 
 from config import group_cells
+
+class IconRightSampleWidget(IRightBody, MDCheckbox):
+    def __init__(self, **kwargs):
+        super(IconRightSampleWidget, self).__init__(**kwargs)
+        print MDCheckbox
 
 class Workspace(Screen):
     def __init__(self, **kwargs):
@@ -18,52 +30,49 @@ class Theming(Screen):
         pass
 
 class Pickspace(Screen):
-    tab_panel = ObjectProperty()
+    pick_layout = ObjectProperty()
+
     def __init__(self, **kwargs):
         super(Pickspace, self).__init__(**kwargs)
         for group in group_cells:
-            tab = MDTab(name=group.lower(), text=group, id=group.lower())
-            #TODO create items in tab
-            #tab.add_widget()
-            self.tab_panel.add_widget(tab)
-        self.tab_panel.bind(width=self.print_width)
+            boxlayout = BoxLayout(size_hint_y=None, height= dp(120), id=group.lower(), orientation='vertical')
+            self.pick_layout.add_widget(boxlayout)
+            button = MDRaisedButton(id=group.lower(), text=group, pos_hint = {'center_x': 0.5},
+                                    on_release=self.test)
+            boxlayout.add_widget(button)
 
-    def print_width(self,x,y):
-        #print x,y
-        #print self.tab_panel.width
-        #print self.ids['tab_panel'].ids
-        a = [widget for widget in self.walk()]
-        print a
-        for i in xrange(0, len(a)-1):
-            print type(a[i])
-            if type(a[i]) == MDLabel:
-                print str(i) + " " + a[i].text
-            if type(a[i]) == MDTabHeader:
-                print str(i) + " " + a[i].text
-        #a[13].width = 50
-        #a[14].width = 20
-        #a[15].width = 30
-        print a[13].width
-        print a[14].width
-        print a[15].width
-        print self.tab_panel.ids
+    def test(self, x):
+        print x.center_x
+        self.parent.change_screen(x.id)
+        # print x.parent
+        # x.center_x = x.parent.center_x
+        # print button.center_x
+
+
+class Erythroid(Screen):
+    teste = ObjectProperty()
+    def __init__(self, **kwargs):
+        super(Erythroid, self).__init__(**kwargs)
+        self.teste.bind(active=self.j)
+    def j(self, widget, state):
+        print widget, state
+        print 'click'
 
 
 class ScreenManagement(ScreenManager):
     def __init__(self, **kwargs):
         super(ScreenManagement, self).__init__(**kwargs)
-        screens = {'theming': Theming(),
-                   'pickspace': Pickspace()}
+        self.saved_screens = {'theming': Theming, 'pickspace': Pickspace,
+                              'erythroid': Erythroid}
         #self.transition = FallOutTransition()
         self.add_widget(Workspace())
-        for screen in screens.values():
-            print screen
-            self.add_widget(screen)
+        self.add_widget(Theming())
         # print Window
         # if platform == 'android':
         #     import android
         #     android.map_key(android.KEYCODE_BACK, 1001)
         Window.bind(on_keyboard=self.android_back_click)
+        #print self.screens
 
     def android_back_click(self, window, key, *largs):
         print key
@@ -78,4 +87,7 @@ class ScreenManagement(ScreenManager):
             return True
 
     def change_screen(self, screen_name):
+        if self.has_screen(screen_name) == False:
+            #print self.saved_screens[screen_name]
+            self.add_widget(self.saved_screens[screen_name]())
         self.current = screen_name
