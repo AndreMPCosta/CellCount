@@ -12,6 +12,7 @@
 #:import MDLabel kivymd.label
 #:import MDTabbedPanel kivymd.tabs.MDTabbedPanel
 #:import OneLineAvatarIconListItem kivymd.list.OneLineAvatarIconListItem
+#:import OneLineListItem kivymd.list.OneLineListItem
 
 
 CellCountRoot:
@@ -142,33 +143,31 @@ CellCountRoot:
 #        tab_width_mode: 'stacked'
 
 <Erythroid>:
-    teste: teste
     name: 'erythroid'
     ScrollView:
         do_scroll_x: False
         BoxLayout:
             orientation: 'vertical'
+            #size_hint: None, None
             MDLabel:
                 font_style: 'Display1'
                 theme_text_color: 'Primary'
                 text: root.name[0].upper() + root.name[1:]
                 halign: 'center'
-                size_hint_y: .2
-            GridLayout:
-                id: erythroid_layout
-                cols: 2
-                col_force_default: 'true'
-                col_default_width: root.width / 2
-                MDList:
-                    MDLabel:
-                        font_style: 'Subhead'
-                        theme_text_color: 'Primary'
-                        text: "Erithroblast"
-                        halign: 'center'
-                    OneLineAvatarIconListItem:
-                        text: "Proerythroblast"
-                        halign: 'left'
-                        on_release: root.j
-                        IconRightSampleWidget:
-                            id: teste
-                            on_release: root.j
+                size_hint: 1, 0.1
+            MDLabel:
+                font_style: 'Title'
+                theme_text_color: 'Primary'
+                text: "Erithroblast"
+                halign: 'center'
+                size_hint: 1, 0.1
+            MDList:
+                size_hint: 1, 0.8
+                OneLineIconListItem:
+                    text: "Proerythroblast"
+                    CellLine:
+                        id: self.text[0].lower() + self.text[1:]
+                        on_state: root.j
+#                    IconRightSampleWidget:
+#                        id: teste
+

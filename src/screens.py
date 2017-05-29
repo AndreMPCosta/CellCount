@@ -7,17 +7,16 @@ from kivy.clock import Clock, mainthread
 
 from kivymd.button import MDRaisedButton
 from kivymd.label import MDLabel
-from kivymd.list import IRightBody
+from kivymd.list import ILeftBody, IRightBody
 from kivymd.selectioncontrols import MDCheckbox
 
 from functools import partial
 
 from config import group_cells
 
-class IconRightSampleWidget(IRightBody, MDCheckbox):
-    def __init__(self, **kwargs):
-        super(IconRightSampleWidget, self).__init__(**kwargs)
-        print MDCheckbox
+
+class CellLine(ILeftBody, MDCheckbox):
+    pass
 
 class Workspace(Screen):
     def __init__(self, **kwargs):
@@ -50,10 +49,10 @@ class Pickspace(Screen):
 
 
 class Erythroid(Screen):
-    teste = ObjectProperty()
+    #teste = ObjectProperty()
     def __init__(self, **kwargs):
         super(Erythroid, self).__init__(**kwargs)
-        self.teste.bind(active=self.j)
+        #self.teste.bind(active=self.j)
     def j(self, widget, state):
         print widget, state
         print 'click'
