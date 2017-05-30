@@ -13,8 +13,6 @@ from kivymd.accordion import MDAccordionItem, MDAccordionSubItem
 
 from functools import partial
 
-from config import group_cells, items
-
 
 class CellLine(ILeftBodyTouch, MDCheckbox):
     pass
@@ -42,15 +40,14 @@ class Theming(Screen):
         super(Theming, self).__init__(**kwargs)
         pass
 
-class Pickspace(Screen):
+class CurrentSession(Screen):
 
     def __init__(self, **kwargs):
-        super(Pickspace, self).__init__(**kwargs)
+        super(CurrentSession, self).__init__(**kwargs)
 
-
-    def test(self, x):
-        print x.center_x
-        self.parent.change_screen(x.id)
+    @mainthread
+    def on_enter(self, *args):
+        self.parent.add_widget(self.parent.saved_screens['workspace']())
 
 
 class Erithroblast(Screen):
@@ -65,9 +62,10 @@ class Erithroblast(Screen):
 class ScreenManagement(ScreenManager):
     def __init__(self, **kwargs):
         super(ScreenManagement, self).__init__(**kwargs)
-        self.saved_screens = {'theming': Theming, 'pickspace': Pickspace}
+        self.saved_screens = {'theming': Theming, 'current_session': CurrentSession,
+                              'workspace': Workspace}
         #self.transition = FallOutTransition()
-        self.add_widget(Workspace())
+        self.add_widget(CurrentSession())
         self.add_widget(Theming())
         # print Window
         # if platform == 'android':
@@ -97,3 +95,7 @@ class ScreenManagement(ScreenManager):
 class SecondScreenManagement(ScreenManager):
     def __init__(self, **kwargs):
         super(SecondScreenManagement, self).__init__(**kwargs)
+
+
+    def populate_workspace(self, _widget):
+        print _widget.ids

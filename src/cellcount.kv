@@ -16,8 +16,6 @@
 #:import MDAccordion kivymd.accordion.MDAccordion
 #:import MDAccordionItem kivymd.accordion.MDAccordionItem
 #:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
-#:import items config.items
-#:import group_cells config.group_cells
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import MDIconButton kivymd.button.MDIconButton
 
@@ -47,6 +45,10 @@ CellCountRoot:
     NavigationDrawerIconButton:
         icon: 'checkbox-blank-circle'
         text: "Current Session"
+        on_release: app.root.ids.scr_mngr.current = 'current_session'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Select Cell Type"
         on_release: app.root.ids.scr_mngr.current = 'workspace'
     NavigationDrawerIconButton:
         icon: 'checkbox-blank-circle'
@@ -55,7 +57,7 @@ CellCountRoot:
     NavigationDrawerIconButton:
         icon: 'checkbox-blank-circle'
         text: "Themes"
-        on_release: app.root.ids.scr_mngr.current = 'theming'
+        on_release: app.root.ids.scr_mngr.current = 'current_session'
 
 <ScreenManagement>:
 #    Workspace:
@@ -103,44 +105,76 @@ CellCountRoot:
             id: accordion
             orientation: 'vertical'
             size_hint_x: None
-            width: '180dp'
+            width: '185dp'
             MDAccordionItem:
-                title: group_cells[0]
+                title: app.group_cells[0]
                 icon: 'checkbox-blank-circle'
                 MDAccordionSubItem:
-                    text: items[group_cells[0]][0].keys()[0]
-                    on_release: secondary_screen_manager.current = items[group_cells[0]][0].keys()[0]
+                    text: app.items[app.group_cells[0]][0].keys()[0]
+                    on_release: secondary_screen_manager.current = app.items[app.group_cells[0]][0].keys()[0]
                 MDAccordionSubItem:
-                    text: items[group_cells[0]][1]
+                    text: app.items[app.group_cells[0]][1]
             MDAccordionItem:
-                title: group_cells[1]
+                title: app.group_cells[1]
                 icon: 'checkbox-blank-circle'
                 MDAccordionSubItem:
-                    text: items[group_cells[1]][0]
+                    text: app.items[app.group_cells[1]][0]
                 MDAccordionSubItem:
-                    text: items[group_cells[1]][1]
+                    text: app.items[app.group_cells[1]][1]
                 MDAccordionSubItem:
-                    text: items[group_cells[1]][2]
+                    text: app.items[app.group_cells[1]][2]
                 MDAccordionSubItem:
-                    text: items[group_cells[1]][3]
+                    text: app.items[app.group_cells[1]][3]
                 MDAccordionSubItem:
-                    text: items[group_cells[1]][4]
+                    text: app.items[app.group_cells[1]][4]
                 MDAccordionSubItem:
-                    text: items[group_cells[1]][5].keys()[0]
+                    text: app.items[app.group_cells[1]][5].keys()[0]
                 MDAccordionSubItem:
-                    text: items[group_cells[1]][6].keys()[0]
+                    text: app.items[app.group_cells[1]][6].keys()[0]
             MDAccordionItem:
-                title: group_cells[2]
+                title: app.group_cells[2]
                 icon: 'checkbox-blank-circle'
                 MDAccordionSubItem:
-                    text: items[group_cells[2]][0]
+                    text: app.items[app.group_cells[2]][0]
                 MDAccordionSubItem:
-                    text: items[group_cells[2]][1]
+                    text: app.items[app.group_cells[2]][1]
                 MDAccordionSubItem:
-                    text: items[group_cells[2]][2]
+                    text: app.items[app.group_cells[2]][2]
+            MDAccordionItem:
+                title: app.group_cells[3]
+                icon: 'checkbox-blank-circle'
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[3]][0]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[3]][1]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[3]][2]
+            MDAccordionItem:
+                title: app.group_cells[4]
+                icon: 'checkbox-blank-circle'
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[4]][0]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[4]][1]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[4]][2]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[4]][3]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[4]][4]
+            MDAccordionItem:
+                title: app.group_cells[5]
+                icon: 'checkbox-blank-circle'
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[5]][0]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[5]][1]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[5]][2]
+                MDAccordionSubItem:
+                    text: app.items[app.group_cells[5]][3]
         SecondScreenManagement:
             id: secondary_screen_manager
-            Pickspace:
             Erithroblast:
 #        MDLabel:
 #            text: "Empty Workspace"
@@ -176,26 +210,27 @@ CellCountRoot:
             pos_hint: {'center_x': 0.5}
             halign: 'center'
 
-<Pickspace>:
+<CurrentSession>:
     pick_layout: pick_layout
-    name: 'pickspace'
+    name: 'current_session'
+    MDLabel:
+        text: 'Empty Workspace'
+        halign: 'center'
+        pos_hint: {'center_x': 0.5}
+        theme_text_color: 'Primary'
     GridLayout:
         id: pick_layout
         cols: 2
         col_force_default: 'true'
         col_default_width: root.width / 2
-        MDLabel:
-            text: 'Empty Workspace'
-            halign: 'center'
-            pos_hint: {'center_x': 0.5}
-            theme_text_color: 'Primary'
+
 #    MDTabbedPanel:
 #        id: tab_panel
 #        tab_display_mode:'text'
 #        tab_width_mode: 'stacked'
 
 <Erithroblast>:
-    name: items[group_cells[0]][0].keys()[0]
+    name: app.items[app.group_cells[0]][0].keys()[0]
     GridLayout:
         id: pick_layout
         cols: 2
@@ -206,61 +241,61 @@ CellCountRoot:
         BoxLayout:
             orientation: 'horizontal'
             MDLabel:
-                id: boxlabel
+                id: l1
                 font_style: "Caption"
                 halign: "center"
-                text: items[group_cells[0]][0].values()[0][0]
+                text: app.items[app.group_cells[0]][0].values()[0][0]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: grp_chkbox_1
-                size_hint:    None, None
-                size:        dp(48), dp(48)
-                pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+                id: Proerythroblast
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
         BoxLayout:
             orientation: 'horizontal'
             MDLabel:
-                id: boxlabel
+                id: l2
                 font_style: "Caption"
                 halign: "center"
-                text: items[group_cells[0]][0].values()[0][1]
+                text: app.items[app.group_cells[0]][0].values()[0][1]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: grp_chkbox_1
-                size_hint:    None, None
-                size:        dp(48), dp(48)
-                pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+                id: Basophilic erythroblast
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
         BoxLayout:
             orientation: 'horizontal'
             MDLabel:
-                id: boxlabel
+                id: l3
                 font_style: "Caption"
                 halign: "center"
-                text: items[group_cells[0]][0].values()[0][2]
+                text: app.items[app.group_cells[0]][0].values()[0][2]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: grp_chkbox_1
-                size_hint:    None, None
-                size:        dp(48), dp(48)
-                pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+                id: Polychromatic erythroblast
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
         BoxLayout:
             orientation: 'horizontal'
             MDLabel:
-                id: boxlabel
+                id: l4
                 font_style: "Caption"
                 halign: "center"
-                text: items[group_cells[0]][0].values()[0][3]
+                text: app.items[app.group_cells[0]][0].values()[0][3]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: grp_chkbox_1
-                size_hint:    None, None
-                size:        dp(48), dp(48)
-                pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+                id: Orthochromatic erythroblast
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
     MDFloatingActionButton:
         id: add_cells
         icon: 'plus'
         opposite_colors: True
         elevation_normal: 8
         pos_hint: {'center_x': 0.85, 'center_y': 0.1}
-        on_release: root.parent.current = 'pickspace'
+        on_release: root.parent.populate_workspace(root)
 
 <SecondScreenManagement>:

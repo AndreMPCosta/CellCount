@@ -14,16 +14,20 @@ import kivymd.material_resources as m_res
 
 from license import license
 from screens import *
-from config import main_colors
+from config import main_colors, languages
 
 class CellCount(App):
     theme_cls = ThemeManager()
     title = "CellCount"
     theme_cls.primary_palette = main_colors['primary']
     theme_cls.accent_palette = main_colors['accent']
+    language = 'en'
+    items = languages[language]['items']
+    group_cells = languages[language]['group_cells']
 
     # def build(self):
-    #     Builder.load_file('cell_count.kv')
+    #     # Builder.load_file('cell_count.kv')
+    #     self.load_language()
 
 
 class NavDrawer(MDNavigationDrawer):
