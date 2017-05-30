@@ -13,6 +13,13 @@
 #:import MDTabbedPanel kivymd.tabs.MDTabbedPanel
 #:import OneLineAvatarIconListItem kivymd.list.OneLineAvatarIconListItem
 #:import OneLineListItem kivymd.list.OneLineListItem
+#:import MDAccordion kivymd.accordion.MDAccordion
+#:import MDAccordionItem kivymd.accordion.MDAccordionItem
+#:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
+#:import items config.items
+#:import group_cells config.group_cells
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import MDIconButton kivymd.button.MDIconButton
 
 
 CellCountRoot:
@@ -89,24 +96,64 @@ CellCountRoot:
 
 
 <Workspace>:
+    accordion: accordion
     name: 'workspace'
     BoxLayout:
-        orientation: 'vertical'
-        size_hint_y: None
-        height: dp(80)
-        center_y: self.parent.center_y
-        MDLabel:
-            text: "Empty Workspace"
-            theme_text_color: 'Primary'
-            pos_hint: {'center_x': 0.5}
-            halign: 'center'
-    MDFloatingActionButton:
-        id: add_cells
-        icon: 'plus'
-        opposite_colors: True
-        elevation_normal: 8
-        pos_hint: {'center_x': 0.85, 'center_y': 0.1}
-        on_release: app.root.ids.scr_mngr.change_screen('pickspace')
+        MDAccordion:
+            id: accordion
+            orientation: 'vertical'
+            size_hint_x: None
+            width: '180dp'
+            MDAccordionItem:
+                title: group_cells[0]
+                icon: 'checkbox-blank-circle'
+                MDAccordionSubItem:
+                    text: items[group_cells[0]][0].keys()[0]
+                    on_release: secondary_screen_manager.current = items[group_cells[0]][0].keys()[0]
+                MDAccordionSubItem:
+                    text: items[group_cells[0]][1]
+            MDAccordionItem:
+                title: group_cells[1]
+                icon: 'checkbox-blank-circle'
+                MDAccordionSubItem:
+                    text: items[group_cells[1]][0]
+                MDAccordionSubItem:
+                    text: items[group_cells[1]][1]
+                MDAccordionSubItem:
+                    text: items[group_cells[1]][2]
+                MDAccordionSubItem:
+                    text: items[group_cells[1]][3]
+                MDAccordionSubItem:
+                    text: items[group_cells[1]][4]
+                MDAccordionSubItem:
+                    text: items[group_cells[1]][5].keys()[0]
+                MDAccordionSubItem:
+                    text: items[group_cells[1]][6].keys()[0]
+            MDAccordionItem:
+                title: group_cells[2]
+                icon: 'checkbox-blank-circle'
+                MDAccordionSubItem:
+                    text: items[group_cells[2]][0]
+                MDAccordionSubItem:
+                    text: items[group_cells[2]][1]
+                MDAccordionSubItem:
+                    text: items[group_cells[2]][2]
+        SecondScreenManagement:
+            id: secondary_screen_manager
+            Pickspace:
+            Erithroblast:
+#        MDLabel:
+#            text: "Empty Workspace"
+#            theme_text_color: 'Primary'
+#            pos_hint: {'center_x': 0.5}
+#            halign: 'center'
+#    MDFloatingActionButton:
+#        id: add_cells
+#        icon: 'plus'
+#        opposite_colors: True
+#        elevation_normal: 8
+#        pos_hint: {'center_x': 0.85, 'center_y': 0.1}
+#        on_release: app.root.ids.scr_mngr.change_screen('pickspace')
 
 <Theming>:
     name: 'theming'
@@ -137,37 +184,83 @@ CellCountRoot:
         cols: 2
         col_force_default: 'true'
         col_default_width: root.width / 2
+        MDLabel:
+            text: 'Empty Workspace'
+            halign: 'center'
+            pos_hint: {'center_x': 0.5}
+            theme_text_color: 'Primary'
 #    MDTabbedPanel:
 #        id: tab_panel
 #        tab_display_mode:'text'
 #        tab_width_mode: 'stacked'
 
-<Erythroid>:
-    name: 'erythroid'
-    ScrollView:
-        do_scroll_x: False
+<Erithroblast>:
+    name: items[group_cells[0]][0].keys()[0]
+    GridLayout:
+        id: pick_layout
+        cols: 2
+#        col_force_default: 'true'
+#        col_default_width: dp(72)
+        row_force_default: True
+        row_default_height: dp(72)
         BoxLayout:
-            orientation: 'vertical'
-            #size_hint: None, None
+            orientation: 'horizontal'
             MDLabel:
-                font_style: 'Display1'
-                theme_text_color: 'Primary'
-                text: root.name[0].upper() + root.name[1:]
-                halign: 'center'
-                size_hint: 1, 0.1
+                id: boxlabel
+                font_style: "Caption"
+                halign: "center"
+                text: items[group_cells[0]][0].values()[0][0]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                id: grp_chkbox_1
+                size_hint:    None, None
+                size:        dp(48), dp(48)
+                pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+        BoxLayout:
+            orientation: 'horizontal'
             MDLabel:
-                font_style: 'Title'
-                theme_text_color: 'Primary'
-                text: "Erithroblast"
-                halign: 'center'
-                size_hint: 1, 0.1
-            MDList:
-                size_hint: 1, 0.8
-                OneLineIconListItem:
-                    text: "Proerythroblast"
-                    CellLine:
-                        id: self.text[0].lower() + self.text[1:]
-                        on_state: root.j
-#                    IconRightSampleWidget:
-#                        id: teste
+                id: boxlabel
+                font_style: "Caption"
+                halign: "center"
+                text: items[group_cells[0]][0].values()[0][1]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                id: grp_chkbox_1
+                size_hint:    None, None
+                size:        dp(48), dp(48)
+                pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+        BoxLayout:
+            orientation: 'horizontal'
+            MDLabel:
+                id: boxlabel
+                font_style: "Caption"
+                halign: "center"
+                text: items[group_cells[0]][0].values()[0][2]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                id: grp_chkbox_1
+                size_hint:    None, None
+                size:        dp(48), dp(48)
+                pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+        BoxLayout:
+            orientation: 'horizontal'
+            MDLabel:
+                id: boxlabel
+                font_style: "Caption"
+                halign: "center"
+                text: items[group_cells[0]][0].values()[0][3]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                id: grp_chkbox_1
+                size_hint:    None, None
+                size:        dp(48), dp(48)
+                pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+    MDFloatingActionButton:
+        id: add_cells
+        icon: 'plus'
+        opposite_colors: True
+        elevation_normal: 8
+        pos_hint: {'center_x': 0.85, 'center_y': 0.1}
+        on_release: root.parent.current = 'pickspace'
 
+<SecondScreenManagement>:

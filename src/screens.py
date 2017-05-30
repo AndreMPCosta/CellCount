@@ -7,21 +7,35 @@ from kivy.clock import Clock, mainthread
 
 from kivymd.button import MDRaisedButton
 from kivymd.label import MDLabel
-from kivymd.list import ILeftBody, IRightBody
+from kivymd.list import ILeftBodyTouch, IRightBodyTouch
 from kivymd.selectioncontrols import MDCheckbox
+from kivymd.accordion import MDAccordionItem, MDAccordionSubItem
 
 from functools import partial
 
-from config import group_cells
+from config import group_cells, items
 
 
-class CellLine(ILeftBody, MDCheckbox):
+class CellLine(ILeftBodyTouch, MDCheckbox):
     pass
 
 class Workspace(Screen):
+    accordion = ObjectProperty()
     def __init__(self, **kwargs):
         super(Workspace, self).__init__(**kwargs)
         pass
+        # for group in group_cells:
+        #     first_level = MDAccordionItem(title=group, icon='checkbox-blank-circle', id=group[0].lower() + group[1:])
+        #     self.accordion.add_widget(first_level)
+        #     for item in items[group]:
+        #         if type(item) == dict:
+        #             print item.keys()[0]
+        #             first_level.add_widget(MDAccordionSubItem(text=item.keys()[0]))
+        #         print type(item)
+
+    def j(self, x):
+        print x
+        print 'click'
 
 class Theming(Screen):
     def __init__(self, **kwargs):
@@ -29,30 +43,20 @@ class Theming(Screen):
         pass
 
 class Pickspace(Screen):
-    pick_layout = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(Pickspace, self).__init__(**kwargs)
-        for group in group_cells:
-            boxlayout = BoxLayout(size_hint_y=None, height= dp(120), id=group.lower(), orientation='vertical')
-            self.pick_layout.add_widget(boxlayout)
-            button = MDRaisedButton(id=group.lower(), text=group, pos_hint = {'center_x': 0.5},
-                                    on_release=self.test)
-            boxlayout.add_widget(button)
+
 
     def test(self, x):
         print x.center_x
         self.parent.change_screen(x.id)
-        # print x.parent
-        # x.center_x = x.parent.center_x
-        # print button.center_x
 
 
-class Erythroid(Screen):
-    #teste = ObjectProperty()
+class Erithroblast(Screen):
     def __init__(self, **kwargs):
-        super(Erythroid, self).__init__(**kwargs)
-        #self.teste.bind(active=self.j)
+        super(Erithroblast, self).__init__(**kwargs)
+
     def j(self, widget, state):
         print widget, state
         print 'click'
@@ -61,8 +65,7 @@ class Erythroid(Screen):
 class ScreenManagement(ScreenManager):
     def __init__(self, **kwargs):
         super(ScreenManagement, self).__init__(**kwargs)
-        self.saved_screens = {'theming': Theming, 'pickspace': Pickspace,
-                              'erythroid': Erythroid}
+        self.saved_screens = {'theming': Theming, 'pickspace': Pickspace}
         #self.transition = FallOutTransition()
         self.add_widget(Workspace())
         self.add_widget(Theming())
@@ -90,3 +93,7 @@ class ScreenManagement(ScreenManager):
             #print self.saved_screens[screen_name]
             self.add_widget(self.saved_screens[screen_name]())
         self.current = screen_name
+
+class SecondScreenManagement(ScreenManager):
+    def __init__(self, **kwargs):
+        super(SecondScreenManagement, self).__init__(**kwargs)

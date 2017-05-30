@@ -4,6 +4,7 @@ from kivy.animation import Animation
 from kivy.metrics import dp
 from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.utils import get_color_from_hex
 
 from kivymd.menu import MDDropdownMenu
 from kivymd.dialog import MDDialog
@@ -13,10 +14,13 @@ import kivymd.material_resources as m_res
 
 from license import license
 from screens import *
+from config import main_colors
 
 class CellCount(App):
     theme_cls = ThemeManager()
     title = "CellCount"
+    theme_cls.primary_palette = main_colors['primary']
+    theme_cls.accent_palette = main_colors['accent']
 
     # def build(self):
     #     Builder.load_file('cell_count.kv')
