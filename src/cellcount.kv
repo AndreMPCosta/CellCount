@@ -1,5 +1,3 @@
-#:import license license
-
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
@@ -33,7 +31,7 @@ CellCountRoot:
             md_bg_color: app.theme_cls.primary_color
             background_palette: 'Primary'
             background_hue: '500'
-            left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
+            left_action_items: [['menu', lambda x: root.toggle_nav_drawer()]]
             right_action_items: [['dots-vertical', lambda x: self.dots_menu.open(self.ids.right_actions)]]
         ScreenManagement:
             id: scr_mngr
@@ -57,30 +55,9 @@ CellCountRoot:
     NavigationDrawerIconButton:
         icon: 'checkbox-blank-circle'
         text: "Themes"
-        on_release: app.root.ids.scr_mngr.current = 'current_session'
+        on_release: app.root.ids.scr_mngr.current = 'theming'
 
 <ScreenManagement>:
-#    Workspace:
-#    Screen:
-#        name: 'theming'
-#        BoxLayout:
-#            orientation: 'vertical'
-#            size_hint_y: None
-#            height: dp(80)
-#            center_y: self.parent.center_y
-#            MDRaisedButton:
-#                size_hint: None, None
-#                size: 3 * dp(48), dp(48)
-#                center_x: self.parent.center_x
-#                text: 'Change theme'
-#                on_release: MDThemePicker().open()
-#                opposite_colors: True
-#                pos_hint: {'center_x': 0.5}
-#            MDLabel:
-#                text: "Current: " + app.theme_cls.theme_style + ", " + app.theme_cls.primary_palette
-#                theme_text_color: 'Primary'
-#                pos_hint: {'center_x': 0.5}
-#                halign: 'center'
 
 
 <ShowLicense>:
@@ -211,7 +188,7 @@ CellCountRoot:
             halign: 'center'
 
 <CurrentSession>:
-    pick_layout: pick_layout
+    #pick_layout: pick_layout
     name: 'current_session'
     MDLabel:
         text: 'Empty Workspace'
@@ -224,13 +201,12 @@ CellCountRoot:
         col_force_default: 'true'
         col_default_width: root.width / 2
 
-#    MDTabbedPanel:
-#        id: tab_panel
-#        tab_display_mode:'text'
-#        tab_width_mode: 'stacked'
+
 
 <Erithroblast>:
     name: app.items[app.group_cells[0]][0].keys()[0]
+    main: app.group_cells[0]
+    index: 0
     GridLayout:
         id: pick_layout
         cols: 2
@@ -260,7 +236,7 @@ CellCountRoot:
                 text: app.items[app.group_cells[0]][0].values()[0][1]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: Basophilic erythroblast
+                id: Basophilic
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
@@ -273,7 +249,7 @@ CellCountRoot:
                 text: app.items[app.group_cells[0]][0].values()[0][2]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: Polychromatic erythroblast
+                id: Polychromatic
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
@@ -286,7 +262,7 @@ CellCountRoot:
                 text: app.items[app.group_cells[0]][0].values()[0][3]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: Orthochromatic erythroblast
+                id: Orthochromatic
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
@@ -296,6 +272,6 @@ CellCountRoot:
         opposite_colors: True
         elevation_normal: 8
         pos_hint: {'center_x': 0.85, 'center_y': 0.1}
-        on_release: root.parent.populate_workspace(root)
+        on_release: root.parent.populate_current_session(root, app)
 
 <SecondScreenManagement>:
