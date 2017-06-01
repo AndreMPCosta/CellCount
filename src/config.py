@@ -11,11 +11,13 @@ items_en = {group_cells_en[0]: [{"Erithroblast":["Proerythroblast","Basophilic",
          group_cells_en[4]: ["Limphoblast", "Prolimphocyte", "Limphocyte", "Activated Limphocyte", "Plasma cell"],
          group_cells_en[5]: ["Mast cell", "ReticularEndothelial", "ExtraHemathopoietic", "Create other type"]}
 
+number_of_cols = 2
+
 languages={'en':{'group_cells':group_cells_en, 'items': items_en}}
 
 main_colors = {'primary': 'Teal', 'accent': 'Red'}
 
-md_colors = ['#ef5350', '#5c6bc0', '#26a69a', '#66bb6a']
+md_colors = ['#ef5350', '#5c6bc0', '#26a69a', '#66bb6a', '#d4e157', '#ffa726', '#8d6e63', '#78909c']
 
 
 

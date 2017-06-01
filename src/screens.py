@@ -1,10 +1,16 @@
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
+from kivy.utils import get_color_from_hex
+from kivy.properties import ObjectProperty
 
 from kivymd.navigationdrawer import NavigationLayout
 from kivymd.snackbar import Snackbar
-from custom_uix import DotsMenu
+from custom_uix import DotsMenu, MDColorFlatButton, ColorManager
+
+from config import md_colors
+
+dev = 1
 
 class Workspace(Screen):
     def __init__(self, **kwargs):
@@ -42,13 +48,40 @@ class CellCountRoot(NavigationLayout):
 
 
 class CurrentSession(Screen):
+    working_layout = ObjectProperty()
+
     def __init__(self, **kwargs):
         super(CurrentSession, self).__init__(**kwargs)
+        #self.snack = Snackbar(text="Current session updated", duration=2)
+        self.working_layout.bind(minimum_height=self.working_layout.setter('height'))
+        self.buttons = {}
 
     @mainthread
     def on_enter(self, *args):
         if not self.parent.has_screen('workspace'):
             self.parent.add_widget(self.parent.saved_screens['workspace']())
+
+
+    def populate_current_session(self, _widget, app, color_manager):
+        working_layout = self.ids['working_layout']
+        #_trigger = False
+        for cells in app.items[_widget.main][_widget.index][_widget.name]:
+            if _widget.ids[cells].active:
+                if not self.buttons.has_key(cells) or dev:
+                    # if not _trigger:
+                    #     self.snack.show()
+                    #     _trigger = True
+                    print 'Adding ' + cells + ' to current session'
+                    button = MDColorFlatButton(text=cells, id=cells, size_hint=(1,1))
+                    self.buttons[cells] = button
+                    button.set_bg_color(get_color_from_hex(color_manager.pop()))
+                    working_layout.add_widget(button)
+            else:
+                if self.buttons.has_key(cells):
+                    working_layout.remove_widget(self.buttons[cells])
+                    # if not _trigger:
+                    #     self.snack.show()
+                    #     _trigger = True
 
 
 class Erithroblast(Screen):
@@ -75,10 +108,11 @@ class ScreenManagement(ScreenManager):
         Window.bind(on_keyboard=self.android_back_click)
         # print self.screens
 
-    @staticmethod
-    def android_back_click(window, key, *largs):
-        print key
+    def android_back_click(self, window, key, *largs):
         if key in [27, 1001, 1073742094, 4]:  # 1073742094:
+            print self.current_screen
+            if self.current_screen.tree == 1:
+                self.current = 'current_session'
             # print (type(self.current_screen))
             # if self.has_screen('SingleNews') :
             #     if self.current_screen == self.get_screen('SingleNews'):
@@ -98,13 +132,6 @@ class ScreenManagement(ScreenManager):
 class SecondScreenManagement(ScreenManager):
     def __init__(self, **kwargs):
         super(SecondScreenManagement, self).__init__(**kwargs)
-        self.snack = Snackbar(text="Added to current session", duration=2)
+        self.color_manager = ColorManager(md_colors)
 
-    def populate_current_session(self, _widget, app):
-        #print _widget.ids
-        self.snack.show()
-        for cells in app.items[_widget.main][_widget.index][_widget.name]:
-            #print cells
-            if _widget.ids[cells].active:
-                print 'Adding ' + cells + ' to current session'
         # print [x for x in _widget.ids['pick_layout'].walk()]

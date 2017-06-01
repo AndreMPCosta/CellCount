@@ -16,6 +16,7 @@
 #:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import MDIconButton kivymd.button.MDIconButton
+#:import number_of_cols config.number_of_cols
 
 
 CellCountRoot:
@@ -77,6 +78,7 @@ CellCountRoot:
 <Workspace>:
     accordion: accordion
     name: 'workspace'
+    tree: 1
     BoxLayout:
         MDAccordion:
             id: accordion
@@ -188,18 +190,34 @@ CellCountRoot:
             halign: 'center'
 
 <CurrentSession>:
+    working_layout: working_layout
     #pick_layout: pick_layout
     name: 'current_session'
-    MDLabel:
-        text: 'Empty Workspace'
-        halign: 'center'
-        pos_hint: {'center_x': 0.5}
-        theme_text_color: 'Primary'
-    GridLayout:
-        id: pick_layout
-        cols: 2
-        col_force_default: 'true'
-        col_default_width: root.width / 2
+#    MDLabel:
+#        text: 'Empty Workspace'
+#        halign: 'center'
+#        pos_hint: {'center_x': 0.5}
+#        theme_text_color: 'Primary'
+    ScrollView:
+        GridLayout:
+            id: working_layout
+            cols: number_of_cols
+            size_hint_y: None
+            col_force_default: 'true'
+            col_default_width: self.width / number_of_cols
+            row_force_default: 'true'
+            row_default_height: self.width / number_of_cols
+#            BoxLayout:
+#                orientation: 'vertical'
+#                size_hint_y: .2
+#                MDFloatingActionButton:
+#                    id: add_cells
+#                    icon: 'plus'
+#                    opposite_colors: True
+#                    elevation_normal: 8
+#                    pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+#                    on_release: app.root.ids.scr_mngr.current = 'workspace'
+
 
 
 
@@ -207,15 +225,17 @@ CellCountRoot:
     name: app.items[app.group_cells[0]][0].keys()[0]
     main: app.group_cells[0]
     index: 0
-    GridLayout:
-        id: pick_layout
-        cols: 2
-#        col_force_default: 'true'
-#        col_default_width: dp(72)
-        row_force_default: True
-        row_default_height: dp(72)
+    BoxLayout:
+        orientation: 'vertical'
+#        id: pick_layout
+#        cols: 2
+##        col_force_default: 'true'
+##        col_default_width: dp(72)
+#        row_force_default: True
+#        row_default_height: dp(72)
         BoxLayout:
             orientation: 'horizontal'
+            size_hint_y: .1
             MDLabel:
                 id: l1
                 font_style: "Caption"
@@ -227,8 +247,10 @@ CellCountRoot:
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
         BoxLayout:
             orientation: 'horizontal'
+            size_hint_y: .1
             MDLabel:
                 id: l2
                 font_style: "Caption"
@@ -240,8 +262,10 @@ CellCountRoot:
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
         BoxLayout:
             orientation: 'horizontal'
+            size_hint_y: .1
             MDLabel:
                 id: l3
                 font_style: "Caption"
@@ -253,8 +277,10 @@ CellCountRoot:
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
         BoxLayout:
             orientation: 'horizontal'
+            size_hint_y: .1
             MDLabel:
                 id: l4
                 font_style: "Caption"
@@ -266,12 +292,23 @@ CellCountRoot:
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
-    MDFloatingActionButton:
-        id: add_cells
-        icon: 'plus'
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
+        BoxLayout:
+            size_hint_y: .6
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
         opposite_colors: True
-        elevation_normal: 8
-        pos_hint: {'center_x': 0.85, 'center_y': 0.1}
-        on_release: root.parent.populate_current_session(root, app)
+        on_release: app.root.ids['scr_mngr'].current = 'current_session'
+
+#    MDFloatingActionButton:
+#        id: add_cells
+#        icon: 'plus'
+#        opposite_colors: True
+#        elevation_normal: 8
+#        pos_hint: {'center_x': 0.75, 'center_y': 0.1}
+#        on_release: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
 
 <SecondScreenManagement>:

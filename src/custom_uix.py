@@ -3,11 +3,52 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.properties import ObjectProperty
+from kivy.lang import Builder
+from kivy.properties import StringProperty, BoundedNumericProperty
+from random import randint
+from copy import deepcopy
 
 from kivymd.menu import MDDropdownMenu
 from kivymd.dialog import MDDialog
 import kivymd.material_resources as m_res
+from kivymd.button import BaseFlatButton, BasePressedButton, BaseButton
+from kivymd.ripplebehavior import RectangularRippleBehavior
+
 from license import license
+
+Builder.load_string('''
+#:import MDLabel kivymd.label.MDLabel
+    
+<BaseCustomRectangularButton>:
+    canvas:
+        Clear
+        Color:
+            rgba: self._current_button_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    content: content
+    height: dp(36)
+    width: content.texture_size[0] + dp(32)
+    padding: (dp(8), 0)
+    theme_text_color: 'Primary'
+    MDLabel:
+        id: content
+        text: root._capitalized_text
+        font_style: 'Button'
+        size_hint_x: None
+        text_size: (None, root.height)
+        height: self.texture_size[1]
+        theme_text_color: root.theme_text_color
+        text_color: root.text_color
+        disabled: root.disabled
+        valign: 'middle'
+        halign: 'center'
+        opposite_colors: root.opposite_colors
+''')
+
+
+
 
 class DotsMenu(MDDropdownMenu):
     def __init__(self, root, **kwargs):
@@ -129,3 +170,46 @@ class ShowLicense(MDDialog):
     def custom_open(self, menu):
         menu.dismiss()
         self.open()
+
+class BaseCustomRectangularButton(RectangularRippleBehavior, BaseButton):
+    '''
+    Abstract base class for all rectangular buttons, bringing in the
+    appropriate on-touch behavior. Also maintains the correct minimum width
+    as stated in guidelines.
+    '''
+    width = BoundedNumericProperty(dp(88), min=dp(88), max=None,
+                                   errorhandler=lambda x: dp(88))
+    text = StringProperty('')
+    _capitalized_text = StringProperty('')
+
+    def on_text(self, instance, value):
+        self._capitalized_text = value.upper()
+
+
+class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressedButton):
+    def __init__(self, **kwargs):
+        super(MDColorFlatButton, self).__init__(**kwargs)
+        self.md_bg_color = (0., 0., 0., 0.)
+
+    def set_bg_color(self, color):
+        self.md_bg_color = color
+
+class ColorManager(object):
+    def __init__(self, color_array, **kwargs):
+        super(ColorManager, self).__init__(**kwargs)
+        self.saved_colors = deepcopy(color_array)
+        self.colors = deepcopy(color_array)
+        self.size = len(self.colors)
+
+    def update_size(self):
+        self.size = len(self.colors)
+        if self.size == 0:
+            self.reset()
+
+    def pop(self):
+        temp_pop = self.colors.pop(randint(0, len(self.colors)-1))
+        self.update_size()
+        return temp_pop
+
+    def reset(self):
+        self.colors = deepcopy(self.saved_colors)
