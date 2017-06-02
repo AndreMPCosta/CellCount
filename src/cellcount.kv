@@ -38,22 +38,30 @@ CellCountRoot:
             id: scr_mngr
 
 <NavDrawer>:
-    id: nav_drawer
+    current_session: current_session
+    workspace: workspace
+    results: results
+    theming: theming
+    #id: nav_drawer
     NavigationDrawerToolbar:
         title: "Navigation Drawer"
     NavigationDrawerIconButton:
+        id: current_session
         icon: 'checkbox-blank-circle'
         text: "Current Session"
         on_release: app.root.ids.scr_mngr.current = 'current_session'
     NavigationDrawerIconButton:
+        id: workspace
         icon: 'checkbox-blank-circle'
         text: "Select Cell Type"
         on_release: app.root.ids.scr_mngr.current = 'workspace'
     NavigationDrawerIconButton:
+        id: results
         icon: 'checkbox-blank-circle'
         text: "Stored Results"
         on_release: app.root.ids.scr_mngr.current = 'results'
     NavigationDrawerIconButton:
+        id: theming
         icon: 'checkbox-blank-circle'
         text: "Themes"
         on_release: app.root.ids.scr_mngr.current = 'theming'
@@ -209,7 +217,7 @@ CellCountRoot:
             row_default_height: self.width / number_of_cols
 #            BoxLayout:
 #                orientation: 'vertical'
-#                size_hint_y: .2
+#                height: dp(72)
 #                MDFloatingActionButton:
 #                    id: add_cells
 #                    icon: 'plus'
@@ -243,11 +251,12 @@ CellCountRoot:
                 text: app.items[app.group_cells[0]][0].values()[0][0]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: Proerythroblast
+                #id: Proerythroblast
+                pass_text: l1.text
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
-                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1
@@ -258,11 +267,12 @@ CellCountRoot:
                 text: app.items[app.group_cells[0]][0].values()[0][1]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: Basophilic
+                #id: Basophilic
+                pass_text: l2.text
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
-                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1
@@ -273,11 +283,12 @@ CellCountRoot:
                 text: app.items[app.group_cells[0]][0].values()[0][2]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: Polychromatic
+                #id: Polychromatic
+                pass_text: l3.text
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
-                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1
@@ -288,11 +299,12 @@ CellCountRoot:
                 text: app.items[app.group_cells[0]][0].values()[0][3]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                id: Orthochromatic
+                #id: Orthochromatic
+                pass_text: l4.text
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
-                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
         BoxLayout:
             size_hint_y: .6
     MDRaisedButton:
@@ -301,7 +313,7 @@ CellCountRoot:
         elevation_normal: 2
         pos_hint: {'center_x': 0.5, 'center_y': 0.15}
         opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].current = 'current_session'
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
 
 #    MDFloatingActionButton:
 #        id: add_cells

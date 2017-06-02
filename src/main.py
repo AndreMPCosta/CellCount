@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.core.window import Window
+from kivy.lang import Builder
 from screens import CellCountRoot
 
 from kivymd.theming import ThemeManager
@@ -19,9 +20,8 @@ class CellCount(App):
     group_cells = languages[language]['group_cells']
 
     # def build(self):
-    #     #self.root = CellCountRoot()
-    #     # Builder.load_file('cell_count.kv')
-    # #     return CellCountRoot()
+    #     with open('cell_count.kv'.decode('utf8')) as f:
+    #         Builder.load_string(f.read())
 
 class NavDrawer(MDNavigationDrawer):
     pass

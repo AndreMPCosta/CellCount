@@ -1,16 +1,22 @@
 from kivy.core.window import Window
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
 from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.metrics import dp
+from kivy.graphics import Color, Canvas, Rectangle, Triangle
 
 from kivymd.navigationdrawer import NavigationLayout
-from kivymd.snackbar import Snackbar
-from custom_uix import DotsMenu, MDColorFlatButton, ColorManager
+from kivymd.label import MDLabel
+from custom_uix import DotsMenu, MDColorFlatButton, ColorManager, Badge
 
-from config import md_colors
+from config import md_colors, number_of_cols
+from functools import partial
 
-dev = 1
+dev = 0
 
 class Workspace(Screen):
     def __init__(self, **kwargs):
@@ -64,24 +70,34 @@ class CurrentSession(Screen):
 
     def populate_current_session(self, _widget, app, color_manager):
         working_layout = self.ids['working_layout']
-        #_trigger = False
-        for cells in app.items[_widget.main][_widget.index][_widget.name]:
-            if _widget.ids[cells].active:
-                if not self.buttons.has_key(cells) or dev:
-                    # if not _trigger:
-                    #     self.snack.show()
-                    #     _trigger = True
-                    print 'Adding ' + cells + ' to current session'
-                    button = MDColorFlatButton(text=cells, id=cells, size_hint=(1,1))
-                    self.buttons[cells] = button
-                    button.set_bg_color(get_color_from_hex(color_manager.pop()))
-                    working_layout.add_widget(button)
-            else:
-                if self.buttons.has_key(cells):
-                    working_layout.remove_widget(self.buttons[cells])
-                    # if not _trigger:
-                    #     self.snack.show()
-                    #     _trigger = True
+        if _widget.active:
+            if not self.buttons.has_key(_widget.pass_text) or dev:
+                print 'Adding ' + _widget.pass_text + ' to current session'
+                button = MDColorFlatButton(text=_widget.pass_text, id=_widget.pass_text, size_hint=(1,1),
+                                           badge_text='40')
+                self.buttons[_widget.pass_text] = button
+                button.set_bg_color(get_color_from_hex(color_manager.pop()))
+                button.bind(width=self.test)
+                working_layout.add_widget(button)
+                r = RelativeLayout()
+                button.badge_label = MDLabel(text='50', pos=(button.pos[0] + button.width - button.width / 7,
+                                            button.height / 2 - button.height / 7))
+                r.add_widget(button.badge_label)
+                button.add_widget(r)
+
+
+        else:
+            if self.buttons.has_key(_widget.pass_text):
+                working_layout.remove_widget(self.buttons[_widget.pass_text])
+                del self.buttons[_widget.pass_text]
+
+    def test(self, button, y):
+        print 'test'
+        #print button.ids.content.pos[1]
+        print button.badge_label.pos
+        print button.pos
+        button.badge_label.pos = (button.pos[0] + button.width - (button.width / 7), button.pos[1])
+
 
 
 class Erithroblast(Screen):
@@ -101,12 +117,17 @@ class ScreenManagement(ScreenManager):
         # self.transition = FallOutTransition()
         self.add_widget(CurrentSession())
         self.add_widget(Theming())
+        self.bind(current_screen=self.update_nav_drawer)
         # print Window
         # if platform == 'android':
         #     import android
         #     android.map_key(android.KEYCODE_BACK, 1001)
         Window.bind(on_keyboard=self.android_back_click)
         # print self.screens
+
+    def update_nav_drawer(self, screen_manager, screen):
+        nav_drawer = self.parent.parent.parent.ids.nav_drawer
+        nav_drawer.ids[screen.name]._set_active(True, list=nav_drawer)
 
     def android_back_click(self, window, key, *largs):
         if key in [27, 1001, 1073742094, 4]:  # 1073742094:

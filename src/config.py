@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 group_cells_en = ["Erythroid", "Myeloid", "Monocytic", "Megakaryocytic", "Limphoid", "Other"]
 
 items_en = {group_cells_en[0]: [{"Erithroblast":["Proerythroblast","Basophilic",
@@ -11,9 +14,22 @@ items_en = {group_cells_en[0]: [{"Erithroblast":["Proerythroblast","Basophilic",
          group_cells_en[4]: ["Limphoblast", "Prolimphocyte", "Limphocyte", "Activated Limphocyte", "Plasma cell"],
          group_cells_en[5]: ["Mast cell", "ReticularEndothelial", "ExtraHemathopoietic", "Create other type"]}
 
+group_cells_pt = ["Eritróide", "Mielóide", "Monocitóide", "Megacariocítico", "Linfóide", "Outras"]
+
+items_pt = {group_cells_en[0]: [{"Eritroblasto":["Pró-eritroblasto","Basofílico",
+                                           "Policromático", "Ortocromático"]},
+                          "Reticulócito"],
+         group_cells_en[1]: ["Mieloblasto", "Promielócito", "Mielócito", "Metamielócito", "Banda",
+                          {"Immature forms": ["I. neutrófilo", "I. basófilo", "I. eosinófilo"]},
+                          {"Formas maduras": ["Neutrófilo", "Basófilo", "Eosinófilo"]}],
+         group_cells_en[2]: ["Monoblasto", "Promonócito", "Monócito"],
+         group_cells_en[3]: ["Megacarioblasto", "Promegacariócito", "Megacariócito"],
+         group_cells_en[4]: ["Limfoblasto", "Prolinfócito", "Linfócito", "Linfócito ativado", "Plasmócito"],
+         group_cells_en[5]: ["Mastócito", "Reticuloendotelial", "Extra-hematopoiético", "Criar outro tipo"]}
+
 number_of_cols = 2
 
-languages={'en':{'group_cells':group_cells_en, 'items': items_en}}
+languages={'en':{'group_cells':group_cells_en, 'items': items_en}, 'pt':{'group_cells':group_cells_pt, 'items': items_pt}}
 
 main_colors = {'primary': 'Teal', 'accent': 'Red'}
 

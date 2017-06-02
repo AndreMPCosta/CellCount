@@ -5,6 +5,10 @@ from kivy.animation import Animation
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from kivy.properties import StringProperty, BoundedNumericProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.widget import Widget
 from random import randint
 from copy import deepcopy
 
@@ -13,6 +17,8 @@ from kivymd.dialog import MDDialog
 import kivymd.material_resources as m_res
 from kivymd.button import BaseFlatButton, BasePressedButton, BaseButton
 from kivymd.ripplebehavior import RectangularRippleBehavior
+from kivymd.label import MDLabel
+from kivymd.list import IRightBody
 
 from license import license
 
@@ -45,9 +51,22 @@ Builder.load_string('''
         valign: 'middle'
         halign: 'center'
         opposite_colors: root.opposite_colors
+            
+    Badge:
+        canvas:
+            Color: 
+                rgba: root.theme_cls.accent_color
+            Triangle:
+                points: (root.pos[0] + root.width - root.width/7, root.pos[1] + root.height, root.pos[0] + root.width, root.pos[1] + root.height, root.pos[0] + root.width, root.pos[1] + root.height - root.height/7)
+        id: _badge_triangle
+        # MDLabel:
+        #     id: label_badge
+        #     x: root.pos[0] + root.width - root.width/14 - dp(4)
+        #     y: content.pos[1]
+        #     text: root.badge_text
+
+    
 ''')
-
-
 
 
 class DotsMenu(MDDropdownMenu):
@@ -58,8 +77,8 @@ class DotsMenu(MDDropdownMenu):
              'text': 'Licenses',
              'on_release': lambda: self.menu_license.custom_open(self)},
             {'viewclass': 'MDFlatButton',
-             'text': 'Settings'}#,
-             #'on_release': lambda: app.open_settings()}
+             'text': 'Settings'}  # ,
+            # 'on_release': lambda: app.open_settings()}
         ]
         self.hor_growth = 'left'
         self.ver_growth = 'down'
@@ -165,11 +184,12 @@ class ShowLicense(MDDialog):
         super(ShowLicense, self).__init__(**kwargs)
         self.title = "License Information"
         self.link_label.text = license
-        #self.content.bind(size=self.link_label.setter('text_size'))
+        # self.content.bind(size=self.link_label.setter('text_size'))
 
     def custom_open(self, menu):
         menu.dismiss()
         self.open()
+
 
 class BaseCustomRectangularButton(RectangularRippleBehavior, BaseButton):
     '''
@@ -187,12 +207,14 @@ class BaseCustomRectangularButton(RectangularRippleBehavior, BaseButton):
 
 
 class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressedButton):
+    badge_text = StringProperty('')
     def __init__(self, **kwargs):
         super(MDColorFlatButton, self).__init__(**kwargs)
         self.md_bg_color = (0., 0., 0., 0.)
 
     def set_bg_color(self, color):
         self.md_bg_color = color
+
 
 class ColorManager(object):
     def __init__(self, color_array, **kwargs):
@@ -207,9 +229,12 @@ class ColorManager(object):
             self.reset()
 
     def pop(self):
-        temp_pop = self.colors.pop(randint(0, len(self.colors)-1))
+        temp_pop = self.colors.pop(randint(0, len(self.colors) - 1))
         self.update_size()
         return temp_pop
 
     def reset(self):
         self.colors = deepcopy(self.saved_colors)
+
+class Badge(BoxLayout):
+    pass
