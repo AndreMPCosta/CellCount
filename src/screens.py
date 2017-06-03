@@ -60,7 +60,7 @@ class CurrentSession(Screen):
             if not self.buttons.has_key(_widget.pass_text) or dev:
                 print 'Adding ' + _widget.pass_text + ' to current session'
                 button = MDColorFlatButton(text=_widget.pass_text, id=_widget.pass_text,
-                                           size_hint=(1,1), on_release=self.test)
+                                           size_hint=(1,1), on_release=self.add)
                 button.ids.content.font_size = sp(12)
                 #print button.ids.content.font_size
                 self.buttons[_widget.pass_text] = button
@@ -80,12 +80,12 @@ class CurrentSession(Screen):
                 self.working_layout.remove_widget(self.buttons[_widget.pass_text])
                 del self.buttons[_widget.pass_text]
 
-    def test(self, button):
+    def add(self, button):
         button.set_is_empty(False)
         button.increment_counter()
         # print button.ids.label_badge.texture_size[0]
         # print button.ids._badge_triangle.right - (button.ids._badge_triangle.canvas.get_group('t')[0].points[2] - button.ids._badge_triangle.canvas.get_group('t')[0].points[1])
-        print button.ids._badge_triangle.top
+        #print button.ids._badge_triangle.top
 
 
 class Erithroblast(Screen):
