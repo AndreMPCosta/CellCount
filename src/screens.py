@@ -1,20 +1,13 @@
 from kivy.core.window import Window
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
 from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.metrics import dp
-from kivy.graphics import Color, Canvas, Rectangle, Triangle
 
 from kivymd.navigationdrawer import NavigationLayout
-from kivymd.label import MDLabel
-from custom_uix import DotsMenu, MDColorFlatButton, ColorManager, Badge
+from custom_uix import DotsMenu, MDColorFlatButton, ColorManager
 
-from config import md_colors, number_of_cols
-from functools import partial
+from config import md_colors
 
 dev = 0
 
@@ -22,14 +15,7 @@ class Workspace(Screen):
     def __init__(self, **kwargs):
         super(Workspace, self).__init__(**kwargs)
         pass
-        # for group in group_cells:
-        #     first_level = MDAccordionItem(title=group, icon='checkbox-blank-circle', id=group[0].lower() + group[1:])
-        #     self.accordion.add_widget(first_level)
-        #     for item in items[group]:
-        #         if type(item) == dict:
-        #             print item.keys()[0]
-        #             first_level.add_widget(MDAccordionSubItem(text=item.keys()[0]))
-        #         print type(item)
+
 
     @staticmethod
     def j(x):
@@ -55,7 +41,7 @@ class CellCountRoot(NavigationLayout):
 
 class CurrentSession(Screen):
     working_layout = ObjectProperty()
-
+    s_layout = ObjectProperty()
     def __init__(self, **kwargs):
         super(CurrentSession, self).__init__(**kwargs)
         #self.snack = Snackbar(text="Current session updated", duration=2)
@@ -69,15 +55,17 @@ class CurrentSession(Screen):
 
 
     def populate_current_session(self, _widget, app, color_manager):
-        working_layout = self.ids['working_layout']
         if _widget.active:
             if not self.buttons.has_key(_widget.pass_text) or dev:
                 print 'Adding ' + _widget.pass_text + ' to current session'
-                button = MDColorFlatButton(text=_widget.pass_text, id=_widget.pass_text, size_hint=(1,1)
-                                           , on_release=self.test)
+                button = MDColorFlatButton(text=_widget.pass_text, id=_widget.pass_text,
+                                           size_hint=(1,1), on_release=self.test)
+                button.ids.content.font_size = 11
+                #print button.ids.content.font_size
                 self.buttons[_widget.pass_text] = button
                 button.set_bg_color(get_color_from_hex(color_manager.pop()))
-                working_layout.add_widget(button)
+                self.working_layout.add_widget(button)
+                #self.s_layout.add_widget(button)
                 # r = RelativeLayout()
                 # button.badge_label = MDLabel(text='50', pos=(button.pos[0] + button.width - button.width / 7,
                 #                             button.height / 2 - button.height / 7))
@@ -87,7 +75,7 @@ class CurrentSession(Screen):
 
         else:
             if self.buttons.has_key(_widget.pass_text):
-                working_layout.remove_widget(self.buttons[_widget.pass_text])
+                self.working_layout.remove_widget(self.buttons[_widget.pass_text])
                 del self.buttons[_widget.pass_text]
 
     def test(self, button):

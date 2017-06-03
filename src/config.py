@@ -27,7 +27,7 @@ items_pt = {group_cells_en[0]: [{"Eritroblasto":["Pró-eritroblasto","Basofílic
          group_cells_en[4]: ["Limfoblasto", "Prolinfócito", "Linfócito", "Linfócito ativado", "Plasmócito"],
          group_cells_en[5]: ["Mastócito", "Reticuloendotelial", "Extra-hematopoiético", "Criar outro tipo"]}
 
-number_of_cols = 2
+number_of_cols = 3
 
 languages={'en':{'group_cells':group_cells_en, 'items': items_en}, 'pt':{'group_cells':group_cells_pt, 'items': items_pt}}
 

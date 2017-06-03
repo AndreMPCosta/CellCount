@@ -199,6 +199,7 @@ CellCountRoot:
 
 <CurrentSession>:
     working_layout: working_layout
+    #s_layout: s_layout
     #pick_layout: pick_layout
     name: 'current_session'
 #    MDLabel:
@@ -215,6 +216,8 @@ CellCountRoot:
             col_default_width: self.width / number_of_cols
             row_force_default: 'true'
             row_default_height: self.width / number_of_cols
+#            Scatter:
+#                id: s_layout
 #            BoxLayout:
 #                orientation: 'vertical'
 #                height: dp(72)
@@ -235,12 +238,6 @@ CellCountRoot:
     index: 0
     BoxLayout:
         orientation: 'vertical'
-#        id: pick_layout
-#        cols: 2
-##        col_force_default: 'true'
-##        col_default_width: dp(72)
-#        row_force_default: True
-#        row_default_height: dp(72)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1

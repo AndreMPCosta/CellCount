@@ -62,16 +62,13 @@ Builder.load_string('''
         FloatLayout:
             MDLabel:
                 id: label_badge
-                #x: root.pos[0] + root.width - root.width/(root.badge_divider * 2) - dp(4)
-                #y: root.pos[1] + root.height/2 - self.texture_size[1]/2
-                x: root.right - root.width/(root.badge_divider * 2)
                 pos_hint_x: None
+                x: root.right - root.width/(root.badge_divider * 2)                
                 y: root.top - root.height/2 - self.texture_size[1]/2
                 text: root.badge_text
+                color: [1, 1, 1, 1]
                 font_size: sp(root.width/14)
-                opposite_colors: root.opposite_colors
-
-    
+                opposite_colors: root.opposite_colors            
 ''')
 
 
