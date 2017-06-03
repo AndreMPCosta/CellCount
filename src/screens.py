@@ -3,6 +3,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
 from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty
+from kivy.metrics import sp
 
 from kivymd.navigationdrawer import NavigationLayout
 from custom_uix import DotsMenu, MDColorFlatButton, ColorManager
@@ -60,11 +61,12 @@ class CurrentSession(Screen):
                 print 'Adding ' + _widget.pass_text + ' to current session'
                 button = MDColorFlatButton(text=_widget.pass_text, id=_widget.pass_text,
                                            size_hint=(1,1), on_release=self.test)
-                #button.ids.content.font_size = 11
+                button.ids.content.font_size = sp(12)
                 #print button.ids.content.font_size
                 self.buttons[_widget.pass_text] = button
                 button.set_bg_color(get_color_from_hex(color_manager.pop()))
                 self.working_layout.add_widget(button)
+                print button.ids._badge_triangle.canvas.get_group('t')[0].points
                 #self.s_layout.add_widget(button)
                 # r = RelativeLayout()
                 # button.badge_label = MDLabel(text='50', pos=(button.pos[0] + button.width - button.width / 7,
@@ -81,7 +83,9 @@ class CurrentSession(Screen):
     def test(self, button):
         button.set_is_empty(False)
         button.increment_counter()
-
+        # print button.ids.label_badge.texture_size[0]
+        # print button.ids._badge_triangle.right - (button.ids._badge_triangle.canvas.get_group('t')[0].points[2] - button.ids._badge_triangle.canvas.get_group('t')[0].points[1])
+        print button.ids._badge_triangle.top
 
 
 class Erithroblast(Screen):

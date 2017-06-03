@@ -57,17 +57,18 @@ Builder.load_string('''
             Color: 
                 rgba: root.theme_cls.accent_color if root._is_empty == False else [1, 1, 1, 0]
             Triangle:
+                group: 't'
                 points: (root.pos[0] + root.width - root.width/root.badge_divider, root.pos[1] + root.height, root.pos[0] + root.width, root.pos[1] + root.height, root.pos[0] + root.width, root.pos[1] + root.height - root.height/root.badge_divider)
         id: _badge_triangle
         FloatLayout:
             MDLabel:
                 id: label_badge
-                pos_hint_x: None
-                x: root.right - root.width/(root.badge_divider * 2)                
-                y: root.top - root.height/2 - self.texture_size[1]/2
+                pos_hint: {'x': 0.9, 'y': 0.4}
+                #x: root.right - (_badge_triangle.canvas.get_group('t')[0].points[2] - _badge_triangle.canvas.get_group('t')[0].points[1])         
+                #y: root.top - root.height/2 - self.texture_size[1]/2
                 text: root.badge_text
                 color: [1, 1, 1, 1]
-                font_size: sp(root.width/16)
+                font_size: sp(12)
                 opposite_colors: root.opposite_colors            
 ''')
 
@@ -211,7 +212,7 @@ class BaseCustomRectangularButton(RectangularRippleBehavior, BaseButton):
 
 class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressedButton):
     counter = NumericProperty(0)
-    badge_divider = NumericProperty(5)
+    badge_divider = NumericProperty(3)
     badge_text = StringProperty('')
     _is_empty = BooleanProperty(True)
     def __init__(self, **kwargs):
@@ -229,7 +230,7 @@ class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressed
 
     def increment_counter(self):
         self.counter += 1
-        self.badge_text = "%02d" % self.counter
+        self.badge_text = str(self.counter) # "%02d" % self.counter
 
 class ColorManager(object):
     def __init__(self, color_array, **kwargs):
