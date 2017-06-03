@@ -73,17 +73,16 @@ class CurrentSession(Screen):
         if _widget.active:
             if not self.buttons.has_key(_widget.pass_text) or dev:
                 print 'Adding ' + _widget.pass_text + ' to current session'
-                button = MDColorFlatButton(text=_widget.pass_text, id=_widget.pass_text, size_hint=(1,1),
-                                           badge_text='40')
+                button = MDColorFlatButton(text=_widget.pass_text, id=_widget.pass_text, size_hint=(1,1)
+                                           , on_release=self.test)
                 self.buttons[_widget.pass_text] = button
                 button.set_bg_color(get_color_from_hex(color_manager.pop()))
-                button.bind(width=self.test)
                 working_layout.add_widget(button)
-                r = RelativeLayout()
-                button.badge_label = MDLabel(text='50', pos=(button.pos[0] + button.width - button.width / 7,
-                                            button.height / 2 - button.height / 7))
-                r.add_widget(button.badge_label)
-                button.add_widget(r)
+                # r = RelativeLayout()
+                # button.badge_label = MDLabel(text='50', pos=(button.pos[0] + button.width - button.width / 7,
+                #                             button.height / 2 - button.height / 7))
+                # r.add_widget(button.badge_label)
+                # button.add_widget(r)
 
 
         else:
@@ -91,12 +90,9 @@ class CurrentSession(Screen):
                 working_layout.remove_widget(self.buttons[_widget.pass_text])
                 del self.buttons[_widget.pass_text]
 
-    def test(self, button, y):
-        print 'test'
-        #print button.ids.content.pos[1]
-        print button.badge_label.pos
-        print button.pos
-        button.badge_label.pos = (button.pos[0] + button.width - (button.width / 7), button.pos[1])
+    def test(self, button):
+        button.set_is_empty(False)
+        button.increment_counter()
 
 
 

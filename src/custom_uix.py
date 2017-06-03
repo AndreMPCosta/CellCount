@@ -2,9 +2,9 @@ from kivy.metrics import dp
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.animation import Animation
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, BooleanProperty
 from kivy.lang import Builder
-from kivy.properties import StringProperty, BoundedNumericProperty
+from kivy.properties import StringProperty, BoundedNumericProperty, NumericProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
@@ -55,15 +55,21 @@ Builder.load_string('''
     Badge:
         canvas:
             Color: 
-                rgba: root.theme_cls.accent_color
+                rgba: root.theme_cls.accent_color if root._is_empty == False else [1, 1, 1, 0]
             Triangle:
-                points: (root.pos[0] + root.width - root.width/7, root.pos[1] + root.height, root.pos[0] + root.width, root.pos[1] + root.height, root.pos[0] + root.width, root.pos[1] + root.height - root.height/7)
+                points: (root.pos[0] + root.width - root.width/root.badge_divider, root.pos[1] + root.height, root.pos[0] + root.width, root.pos[1] + root.height, root.pos[0] + root.width, root.pos[1] + root.height - root.height/root.badge_divider)
         id: _badge_triangle
-        # MDLabel:
-        #     id: label_badge
-        #     x: root.pos[0] + root.width - root.width/14 - dp(4)
-        #     y: content.pos[1]
-        #     text: root.badge_text
+        FloatLayout:
+            MDLabel:
+                id: label_badge
+                #x: root.pos[0] + root.width - root.width/(root.badge_divider * 2) - dp(4)
+                #y: root.pos[1] + root.height/2 - self.texture_size[1]/2
+                x: root.right - root.width/(root.badge_divider * 2)
+                pos_hint_x: None
+                y: root.top - root.height/2 - self.texture_size[1]/2
+                text: root.badge_text
+                font_size: sp(root.width/14)
+                opposite_colors: root.opposite_colors
 
     
 ''')
@@ -207,7 +213,10 @@ class BaseCustomRectangularButton(RectangularRippleBehavior, BaseButton):
 
 
 class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressedButton):
+    counter = NumericProperty(0)
+    badge_divider = NumericProperty(5)
     badge_text = StringProperty('')
+    _is_empty = BooleanProperty(True)
     def __init__(self, **kwargs):
         super(MDColorFlatButton, self).__init__(**kwargs)
         self.md_bg_color = (0., 0., 0., 0.)
@@ -215,6 +224,15 @@ class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressed
     def set_bg_color(self, color):
         self.md_bg_color = color
 
+    def set_is_empty(self, boolean):
+        if boolean:
+            self._is_empty = True
+        else:
+            self._is_empty = False
+
+    def increment_counter(self):
+        self.counter += 1
+        self.badge_text = "%02d" % self.counter
 
 class ColorManager(object):
     def __init__(self, color_array, **kwargs):
