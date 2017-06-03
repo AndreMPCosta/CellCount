@@ -63,10 +63,11 @@ Builder.load_string('''
         FloatLayout:
             MDLabel:
                 id: label_badge
-                pos_hint: {'x': 0.9, 'y': 0.4}
+                markup: True
+                pos_hint: {'x': 0.925, 'y': 0.4}
                 #x: root.right - (_badge_triangle.canvas.get_group('t')[0].points[2] - _badge_triangle.canvas.get_group('t')[0].points[1])         
                 #y: root.top - root.height/2 - self.texture_size[1]/2
-                text: root.badge_text
+                text: '[b]' + root.badge_text + '[/b]'
                 color: [1, 1, 1, 1]
                 font_size: sp(12)
                 opposite_colors: root.opposite_colors            
@@ -230,6 +231,10 @@ class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressed
 
     def increment_counter(self):
         self.counter += 1
+        print self.ids.label_badge.pos_hint
+        if self.counter > 9:
+            if self.ids.label_badge.pos_hint['x'] != 0.9:
+                self.ids.label_badge.pos_hint = {'x':0.9, 'y': 0.4}
         self.badge_text = str(self.counter) # "%02d" % self.counter
 
 class ColorManager(object):
