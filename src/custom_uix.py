@@ -67,7 +67,7 @@ Builder.load_string('''
                 y: root.top - root.height/2 - self.texture_size[1]/2
                 text: root.badge_text
                 color: [1, 1, 1, 1]
-                font_size: sp(root.width/14)
+                font_size: sp(root.width/16)
                 opposite_colors: root.opposite_colors            
 ''')
 

@@ -60,7 +60,7 @@ class CurrentSession(Screen):
                 print 'Adding ' + _widget.pass_text + ' to current session'
                 button = MDColorFlatButton(text=_widget.pass_text, id=_widget.pass_text,
                                            size_hint=(1,1), on_release=self.test)
-                button.ids.content.font_size = 11
+                #button.ids.content.font_size = 11
                 #print button.ids.content.font_size
                 self.buttons[_widget.pass_text] = button
                 button.set_bg_color(get_color_from_hex(color_manager.pop()))

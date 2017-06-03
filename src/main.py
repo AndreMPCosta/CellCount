@@ -8,7 +8,7 @@ from kivymd.navigationdrawer import MDNavigationDrawer, NavigationLayout
 
 from config import main_colors, languages
 
-Window.size = (1080/3, 1920/3)
+#Window.size = (1080/3, 1920/3)
 
 class CellCount(App):
     theme_cls = ThemeManager()
