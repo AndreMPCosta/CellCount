@@ -2,8 +2,6 @@ from kivy.app import App
 from screens import CellCountRoot
 
 from kivymd.theming import ThemeManager
-from kivymd.navigationdrawer import MDNavigationDrawer, NavigationLayout
-
 from config import main_colors, languages
 
 #Window.size = (1080/3, 1920/3)
@@ -30,8 +28,6 @@ class CellCount(App):
     #     with open('cell_count.kv'.decode('utf8')) as f:
     #         Builder.load_string(f.read())
 
-class NavDrawer(MDNavigationDrawer):
-    pass
 
 
 if __name__ == '__main__':
