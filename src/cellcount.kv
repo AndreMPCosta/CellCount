@@ -225,27 +225,34 @@ CellCountRoot:
 #        pos_hint: {'center_x': 0.5}
 #        theme_text_color: 'Primary'
     ScrollView:
-        GridLayout:
-            id: working_layout
-            spacing: 1
-            cols: root.n_of_cols
+        BoxLayout:
+            orientation: 'vertical'
             size_hint_y: None
-            col_force_default: 'true'
-            col_default_width: self.width / self.cols
-            row_force_default: 'true'
-            row_default_height: self.width / self.cols
-#            Scatter:
-#                id: s_layout
-#            BoxLayout:
-#                orientation: 'vertical'
-#                height: dp(72)
-#                MDFloatingActionButton:
-#                    id: add_cells
-#                    icon: 'plus'
-#                    opposite_colors: True
-#                    elevation_normal: 8
-#                    pos_hint: {'center_x': 0.75, 'center_y': 0.5}
-#                    on_release: app.root.ids.scr_mngr.current = 'workspace'
+            GridLayout:
+                id: working_layout
+                spacing: 1
+                cols: root.n_of_cols
+                size_hint_y: None
+                col_force_default: 'true'
+                col_default_width: self.width / self.cols
+                row_force_default: 'true'
+                row_default_height: self.width / self.cols
+    #            Scatter:
+    #                id: s_layout
+    #            BoxLayout:
+    #                orientation: 'vertical'
+    #                height: dp(72)
+            FloatLayout:
+                id: plus_layout
+                size_hint_y: None
+                #height: root.height - add_cells.height - root.parent.toolbar.height
+                MDFloatingActionButton:
+                    id: add_cells
+                    icon: 'plus'
+                    pos_hint: {'center_x': 0.8}
+                    opposite_colors: True
+                    elevation_normal: 8
+                    on_release: app.root.ids.scr_mngr.current = 'workspace'
 
 
 

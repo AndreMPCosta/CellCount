@@ -15,6 +15,7 @@ class CellCount(App):
     items = languages[language]['items']
     group_cells = languages[language]['group_cells']
 
+
     def on_pause(self):
         # Here you can save data if needed
         return True

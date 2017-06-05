@@ -1,4 +1,5 @@
 from kivy.core.window import Window
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
 from kivy.utils import get_color_from_hex
@@ -41,10 +42,10 @@ class CurrentSession(Screen):
     def __init__(self, **kwargs):
         super(CurrentSession, self).__init__(**kwargs)
         #self.snack = Snackbar(text="Current session updated", duration=2)
-        self.working_layout.bind(minimum_height=self.working_layout.setter('height'))
         self.buttons = {}
         self.available_grid_sizes = ['small', 'large']
         self.bind(grid=self.refresh_menu_text)
+        self.working_layout.bind(minimum_height=self.working_layout.setter('height'))
         self.menu_item = {'viewclass': 'MDFlatButton',
                           'text': 'Show %s grid' % self.grid,
                           'on_release': lambda: self.change_grid_size()}
@@ -52,6 +53,21 @@ class CurrentSession(Screen):
 
     def my_init(self, dt):
         self.root = self.parent.parent.parent.parent
+        self.working_layout.parent.bind(minimum_height=self.working_layout.parent.setter('height'))
+        self.bind(height=self.adjust_height)
+        self.working_layout.bind(height=self.adjust_height)
+
+    def adjust_height(self, instance, value):
+        # TODO Analysis
+        print self.height
+        self.ids.plus_layout.height = self.height - self.ids.add_cells.height - self.root.ids.toolbar.height
+        print self.ids.plus_layout.height
+        print [x for x in instance.walk()]
+        print self.buttons
+        #print type(instance) == GridLayout
+        if type(instance) == GridLayout:
+            self.ids.plus_layout.height = self.working_layout.row_default_height
+            self.ids.add_cells.y = self.buttons[sorted(self.buttons.keys())[-1]].y
 
     @mainthread
     def on_enter(self, *args):

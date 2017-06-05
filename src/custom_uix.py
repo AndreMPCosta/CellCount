@@ -186,16 +186,16 @@ class DotsMenu(MDDropdownMenu):
         menu.pos = self.control_size
         anim.start(menu)
 
+    def finalize_dismiss(self, anim, menu):
+        self.dismiss()
+        menu.opacity = 1
+
     def custom_dismiss(self):
         menu = self.ids['md_menu']
         anim = Animation(opacity=0,
                          duration=.5, transition='out_quint')
         anim.start(menu)
         anim.bind(on_complete=self.finalize_dismiss)
-
-    def finalize_dismiss(self, anim, menu):
-        self.dismiss()
-        menu.opacity = 1
 
 
 class ShowLicense(MDDialog):
