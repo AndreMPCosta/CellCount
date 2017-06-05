@@ -16,7 +16,8 @@
 #:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import MDIconButton kivymd.button.MDIconButton
-#:import number_of_cols config.number_of_cols
+#:import items config.items
+#:import group_cells config.group_cells
 
 
 CellCountRoot:
@@ -98,26 +99,34 @@ CellCountRoot:
                 icon: 'checkbox-blank-circle'
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[0]][0].keys()[0]
-                    on_release: secondary_screen_manager.current = app.items[app.group_cells[0]][0].keys()[0]
+                    on_release: secondary_screen_manager.current = items[group_cells[0]][0].keys()[0]
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[0]][1]
+                    on_release: secondary_screen_manager.current = items[group_cells[0]][1]
             MDAccordionItem:
                 title: app.group_cells[1]
                 icon: 'checkbox-blank-circle'
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[1]][0]
+                    on_release: secondary_screen_manager.current = items[group_cells[1]][0]
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[1]][1]
+                    on_release: secondary_screen_manager.current = items[group_cells[1]][1]
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[1]][2]
+                    on_release: secondary_screen_manager.current = items[group_cells[1]][2]
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[1]][3]
+                    on_release: secondary_screen_manager.current = items[group_cells[1]][3]
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[1]][4]
+                    on_release: secondary_screen_manager.current = items[group_cells[1]][4]
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[1]][5].keys()[0]
+                    on_release: secondary_screen_manager.current = items[group_cells[1]][5].keys()[0]
                 MDAccordionSubItem:
                     text: app.items[app.group_cells[1]][6].keys()[0]
+                    on_release: secondary_screen_manager.current = items[group_cells[1]][6].keys()[0]
             MDAccordionItem:
                 title: app.group_cells[2]
                 icon: 'checkbox-blank-circle'
@@ -163,6 +172,14 @@ CellCountRoot:
         SecondScreenManagement:
             id: secondary_screen_manager
             Erithroblast:
+            Reticulocyte:
+            Myeloblast:
+            Promyelocyte:
+            Myelocyte:
+            Metamyelocyte:
+            Band:
+            Immature_forms:
+            Mature_forms:
 #        MDLabel:
 #            text: "Empty Workspace"
 #            theme_text_color: 'Primary'
@@ -210,12 +227,12 @@ CellCountRoot:
     ScrollView:
         GridLayout:
             id: working_layout
-            cols: number_of_cols
+            cols: root.n_of_cols
             size_hint_y: None
             col_force_default: 'true'
-            col_default_width: self.width / number_of_cols
+            col_default_width: self.width / self.cols
             row_force_default: 'true'
-            row_default_height: self.width / number_of_cols
+            row_default_height: self.width / self.cols
 #            Scatter:
 #                id: s_layout
 #            BoxLayout:
@@ -233,22 +250,24 @@ CellCountRoot:
 
 
 <Erithroblast>:
-    name: app.items[app.group_cells[0]][0].keys()[0]
-    main: app.group_cells[0]
+    name: items[group_cells[0]][0].keys()[0]
+    main: group_cells[0]
     index: 0
     BoxLayout:
+        id: main_container
         orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        spacing: dp(20)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: .1
             MDLabel:
                 id: l1
                 font_style: "Caption"
-                halign: "center"
+                halign: "left"
                 text: app.items[app.group_cells[0]][0].values()[0][0]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                #id: Proerythroblast
                 pass_text: l1.text
                 size_hint: None, None
                 size: dp(48), dp(48)
@@ -260,11 +279,10 @@ CellCountRoot:
             MDLabel:
                 id: l2
                 font_style: "Caption"
-                halign: "center"
+                halign: "left"
                 text: app.items[app.group_cells[0]][0].values()[0][1]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                #id: Basophilic
                 pass_text: l2.text
                 size_hint: None, None
                 size: dp(48), dp(48)
@@ -276,11 +294,10 @@ CellCountRoot:
             MDLabel:
                 id: l3
                 font_style: "Caption"
-                halign: "center"
+                halign: "left"
                 text: app.items[app.group_cells[0]][0].values()[0][2]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                #id: Polychromatic
                 pass_text: l3.text
                 size_hint: None, None
                 size: dp(48), dp(48)
@@ -292,18 +309,16 @@ CellCountRoot:
             MDLabel:
                 id: l4
                 font_style: "Caption"
-                halign: "center"
+                halign: "left"
                 text: app.items[app.group_cells[0]][0].values()[0][3]
                 theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
             MDCheckbox:
-                #id: Orthochromatic
                 pass_text: l4.text
                 size_hint: None, None
                 size: dp(48), dp(48)
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
         BoxLayout:
-            size_hint_y: .6
     MDRaisedButton:
         id: update_current_session
         text: 'Back'
@@ -311,6 +326,330 @@ CellCountRoot:
         pos_hint: {'center_x': 0.5, 'center_y': 0.15}
         opposite_colors: True
         on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
+<Reticulocyte>:
+    index: 1
+    name: items[group_cells[0]][self.index]
+    main: group_cells[0]
+    BoxLayout:
+        id: main_container
+        orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l1
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[0]][root.index]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l1.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+        opposite_colors: True
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
+
+<Myeloblast>:
+    index: 0
+    name: items[group_cells[1]][self.index]
+    main: group_cells[1]
+    BoxLayout:
+        id: main_container
+        orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l1
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l1.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+        opposite_colors: True
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
+
+<Promyelocyte>:
+    index: 1
+    name: items[group_cells[1]][self.index]
+    main: group_cells[1]
+    BoxLayout:
+        id: main_container
+        orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l1
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l1.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+        opposite_colors: True
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
+
+<Myelocyte>:
+    index: 2
+    name: items[group_cells[1]][self.index]
+    main: group_cells[1]
+    BoxLayout:
+        id: main_container
+        orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l1
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l1.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+        opposite_colors: True
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
+<Metamyelocyte>:
+    index: 3
+    name: items[group_cells[1]][self.index]
+    main: group_cells[1]
+    BoxLayout:
+        id: main_container
+        orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l1
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l1.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+        opposite_colors: True
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
+<Band>:
+    index: 4
+    name: items[group_cells[1]][self.index]
+    main: group_cells[1]
+    BoxLayout:
+        id: main_container
+        orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l1
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l1.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+        opposite_colors: True
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
+<Immature_forms>:
+    index: 5
+    name: items[group_cells[1]][self.index].keys()[0]
+    main: group_cells[1]
+    BoxLayout:
+        id: main_container
+        orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        spacing: dp(20)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l1
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index].values()[0][0]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l1.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l2
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index].values()[0][1]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l2.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l3
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index].values()[0][2]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l3.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+            #size_hint_y: 1 - (len((main_container.children))*0.1)
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+        opposite_colors: True
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
+
+<Mature_forms>:
+    index: 6
+    name: items[group_cells[1]][self.index].keys()[0]
+    main: group_cells[1]
+    BoxLayout:
+        id: main_container
+        orientation: 'vertical'
+        padding: [dp(10), 0, 0, 0]
+        spacing: dp(20)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l1
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index].values()[0][0]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l1.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l2
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index].values()[0][1]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l2.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: .1
+            MDLabel:
+                id: l3
+                font_style: "Caption"
+                halign: "left"
+                text: app.items[app.group_cells[1]][root.index].values()[0][2]
+                theme_text_color: 'Secondary' if app.theme_cls.theme_style == 'Light' else 'Primary'
+            MDCheckbox:
+                pass_text: l3.text
+                size_hint: None, None
+                size: dp(48), dp(48)
+                pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+                on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app, root.parent.color_manager)
+        BoxLayout:
+    MDRaisedButton:
+        id: update_current_session
+        text: 'Back'
+        elevation_normal: 2
+        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+        opposite_colors: True
+        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+
 
 #    MDFloatingActionButton:
 #        id: add_cells

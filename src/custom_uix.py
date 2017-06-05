@@ -2,7 +2,7 @@ from kivy.metrics import dp
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.animation import Animation
-from kivy.properties import ObjectProperty, BooleanProperty
+from kivy.properties import ObjectProperty, BooleanProperty, ListProperty
 from kivy.lang import Builder
 from kivy.properties import StringProperty, BoundedNumericProperty, NumericProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -75,6 +75,7 @@ Builder.load_string('''
 
 
 class DotsMenu(MDDropdownMenu):
+    items = ListProperty()
     def __init__(self, root, **kwargs):
         super(DotsMenu, self).__init__(**kwargs)
         self.items = [
@@ -93,6 +94,8 @@ class DotsMenu(MDDropdownMenu):
         self.control_size = (self.root.width - dp(3), self.root.top - dp(3))
         self.root.bind(width=self.adapt_control_width)
         self.root.bind(height=self.adapt_control_height)
+        self.bind(items=self.ids['md_menu'].refresh_from_data)
+
 
     def adapt_control_width(self, x, y):
         self.control_size = (self.root.width - dp(3), self.control_size[1])
@@ -181,6 +184,17 @@ class DotsMenu(MDDropdownMenu):
         menu.pos = self.control_size
         anim.start(menu)
 
+    def custom_dismiss(self):
+        menu = self.ids['md_menu']
+        anim = Animation(opacity=0,
+                         duration=.5, transition='out_quint')
+        anim.start(menu)
+        anim.bind(on_complete=self.finalize_dismiss)
+
+    def finalize_dismiss(self, anim, menu):
+        self.dismiss()
+        menu.opacity = 1
+
 
 class ShowLicense(MDDialog):
     link_label = ObjectProperty()
@@ -231,7 +245,6 @@ class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressed
 
     def increment_counter(self):
         self.counter += 1
-        print self.ids.label_badge.pos_hint
         if self.counter > 9:
             if self.ids.label_badge.pos_hint['x'] != 0.9:
                 self.ids.label_badge.pos_hint = {'x':0.9, 'y': 0.4}

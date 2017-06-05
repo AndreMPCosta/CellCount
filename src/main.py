@@ -1,6 +1,4 @@
 from kivy.app import App
-from kivy.core.window import Window
-from kivy.lang import Builder
 from screens import CellCountRoot
 
 from kivymd.theming import ThemeManager
