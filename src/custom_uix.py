@@ -42,6 +42,7 @@ Builder.load_string('''
         font_style: 'Button'
         size_hint_x: None
         text_size: (None, root.height)
+        font_size: sp(12) if root.grid == 'small' else sp(10)
         height: self.texture_size[1]
         theme_text_color: root.theme_text_color
         text_color: root.text_color
@@ -67,7 +68,7 @@ Builder.load_string('''
                 #y: root.top - root.height/2 - self.texture_size[1]/2
                 text: '[b]' + root.badge_text + '[/b]'
                 color: [1, 1, 1, 1]
-                font_size: sp(12)
+                font_size: sp(12) if root.grid == 'small' else sp(10)
                 opposite_colors: root.opposite_colors            
 ''')
 
@@ -231,6 +232,7 @@ class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressed
     badge_divider = NumericProperty(3)
     badge_text = StringProperty('')
     _is_empty = BooleanProperty(True)
+    grid = StringProperty('small')
     def __init__(self, **kwargs):
         super(MDColorFlatButton, self).__init__(**kwargs)
         self.md_bg_color = (0., 0., 0., 0.)

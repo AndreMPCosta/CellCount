@@ -88,7 +88,7 @@ class CurrentSession(Screen):
                 new_text = _widget.pass_text.replace(' ', '\n')
                 button = MDColorFlatButton(text=new_text, id=_widget.pass_text,
                                            size_hint=(1,1), on_release=self.add)
-                button.ids.content.font_size = sp(12)
+                self.bind(grid=button.setter('grid'))
                 self.buttons[_widget.pass_text] = button
                 button.set_bg_color(get_color_from_hex(color_manager.pop()))
                 self.working_layout.add_widget(button)
@@ -98,6 +98,8 @@ class CurrentSession(Screen):
                 del self.buttons[_widget.pass_text]
 
     def add(self, button):
+        print button.ids.content.font_size
+        print button.grid
         button.set_is_empty(False)
         button.increment_counter()
 
