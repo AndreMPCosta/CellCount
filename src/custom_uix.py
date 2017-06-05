@@ -42,7 +42,7 @@ Builder.load_string('''
         font_style: 'Button'
         size_hint_x: None
         text_size: (None, root.height)
-        font_size: sp(12) if root.grid == 'small' else sp(10)
+        font_size: sp(12) if root.grid == 'small' else sp(9)
         height: self.texture_size[1]
         theme_text_color: root.theme_text_color
         text_color: root.text_color
