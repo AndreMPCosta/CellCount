@@ -17,6 +17,15 @@ class CellCount(App):
     items = languages[language]['items']
     group_cells = languages[language]['group_cells']
 
+    def on_pause(self):
+        # Here you can save data if needed
+        return True
+
+    def on_resume(self):
+        # Here you can check if any data needs replacing (usually nothing)
+        pass
+
+
     # def build(self):
     #     with open('cell_count.kv'.decode('utf8')) as f:
     #         Builder.load_string(f.read())

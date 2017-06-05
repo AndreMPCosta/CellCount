@@ -5,6 +5,7 @@ from kivy.animation import Animation
 from kivy.properties import ObjectProperty, BooleanProperty, ListProperty
 from kivy.lang import Builder
 from kivy.properties import StringProperty, BoundedNumericProperty, NumericProperty
+from kivy.uix.behaviors import DragBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
@@ -233,6 +234,18 @@ class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressed
     def __init__(self, **kwargs):
         super(MDColorFlatButton, self).__init__(**kwargs)
         self.md_bg_color = (0., 0., 0., 0.)
+        # self.bind(pos=self.set_drag_rectangle, size=self.set_drag_rectangle, on_touch_move=self.bring_to_front)
+        # self.drag_timeout = 10000000
+        # self.drag_distance = 0
+
+    def bring_to_front(self, instance, value):
+        print 'bringing to front'
+        parent = self.parent
+        parent.remove_widget(self)
+        parent.add_widget(self)
+
+    def set_drag_rectangle(self, instance, value):
+        self.drag_rectangle = [self.x, self.y, self.width, self.height]
 
     def set_bg_color(self, color):
         self.md_bg_color = color
@@ -242,6 +255,7 @@ class MDColorFlatButton(BaseCustomRectangularButton, BaseFlatButton, BasePressed
             self._is_empty = True
         else:
             self._is_empty = False
+
 
     def increment_counter(self):
         self.counter += 1

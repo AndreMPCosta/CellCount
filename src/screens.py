@@ -69,10 +69,10 @@ class CurrentSession(Screen):
     @mainthread
     def on_leave(self, *args):
         if len(self.root.ids['toolbar'].dots_menu.items) > 2:
-            del self.root.ids['toolbar'].dots_menu.items[2]
+            del self.root.ids['toolbar'].dots_menu.items[1]
 
     def update_dots_menu(self):
-        self.root.ids['toolbar'].dots_menu.items.append(self.menu_item)
+        self.root.ids['toolbar'].dots_menu.items.insert(1, self.menu_item)
 
     def refresh_menu_text(self, widget, value):
         self.menu_item['text'] = 'Show %s grid' % value
@@ -84,7 +84,7 @@ class CurrentSession(Screen):
         else:
             self.grid = self.available_grid_sizes[1]
             self.n_of_cols = number_of_cols + 1
-        self.root.ids['toolbar'].dots_menu.items[2]=self.menu_item
+        self.root.ids['toolbar'].dots_menu.items[1]=self.menu_item
         self.root.ids['toolbar'].dots_menu.custom_dismiss()
 
 
@@ -96,7 +96,6 @@ class CurrentSession(Screen):
                 button = MDColorFlatButton(text=new_text, id=_widget.pass_text,
                                            size_hint=(1,1), on_release=self.add)
                 button.ids.content.font_size = sp(12)
-                #print button.ids.content.font_size
                 self.buttons[_widget.pass_text] = button
                 button.set_bg_color(get_color_from_hex(color_manager.pop()))
                 self.working_layout.add_widget(button)
@@ -108,6 +107,8 @@ class CurrentSession(Screen):
     def add(self, button):
         button.set_is_empty(False)
         button.increment_counter()
+
+
         # print button.ids.label_badge.texture_size[0]
         # print button.ids._badge_triangle.right - (button.ids._badge_triangle.canvas.get_group('t')[0].points[2] - button.ids._badge_triangle.canvas.get_group('t')[0].points[1])
         #print button.ids._badge_triangle.top
