@@ -5,16 +5,12 @@ from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 from kivy.metrics import sp
 
-from kivymd.navigationdrawer import NavigationLayout, MDNavigationDrawer
+from kivymd.navigationdrawer import NavigationLayout
 from custom_uix import DotsMenu, MDColorFlatButton, ColorManager
 
 from config import md_colors, number_of_cols
 
 dev = 0
-
-class NavDrawer(MDNavigationDrawer):
-    pass
-
 
 class Workspace(Screen):
     def __init__(self, **kwargs):

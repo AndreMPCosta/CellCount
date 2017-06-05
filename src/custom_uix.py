@@ -7,9 +7,6 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty, BoundedNumericProperty, NumericProperty
 from kivy.uix.behaviors import DragBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.widget import Widget
 from random import randint
 from copy import deepcopy
 
@@ -18,8 +15,8 @@ from kivymd.dialog import MDDialog
 import kivymd.material_resources as m_res
 from kivymd.button import BaseFlatButton, BasePressedButton, BaseButton
 from kivymd.ripplebehavior import RectangularRippleBehavior
-from kivymd.label import MDLabel
-from kivymd.list import IRightBody
+from kivymd.navigationdrawer import MDNavigationDrawer
+
 
 from license import license
 
@@ -73,6 +70,9 @@ Builder.load_string('''
                 font_size: sp(12)
                 opposite_colors: root.opposite_colors            
 ''')
+
+class NavDrawer(MDNavigationDrawer):
+    pass
 
 
 class DotsMenu(MDDropdownMenu):
