@@ -1,12 +1,11 @@
 from kivy.core.window import Window
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
 from kivy.utils import get_color_from_hex
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty, DictProperty, BooleanProperty
 
 from kivymd.navigationdrawer import NavigationLayout
-from custom_uix import DotsMenu, MDColorFlatButton, ColorManager
+from custom_uix import DotsMenu, MDColorFlatButton, ColorManager, MDResetCheckbox
 
 from config import md_colors, number_of_cols
 
@@ -35,38 +34,58 @@ class CellCountRoot(NavigationLayout):
 
 class CurrentSession(Screen):
     working_layout = ObjectProperty()
+    buttons = DictProperty()
     grid = StringProperty('small')
     n_of_cols = NumericProperty(number_of_cols)
+    color_manager = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(CurrentSession, self).__init__(**kwargs)
         #self.snack = Snackbar(text="Current session updated", duration=2)
         self.buttons = {}
         self.available_grid_sizes = ['small', 'large']
-        self.bind(grid=self.refresh_menu_text)
+        self.bind(grid=self.refresh_menu_text, buttons=self.refresh_screen)
         self.working_layout.bind(minimum_height=self.working_layout.setter('height'))
-        self.menu_item = {'viewclass': 'MDFlatButton',
+        self.menu_items = [{'viewclass': 'MDFlatButton',
                           'text': 'Show %s grid' % self.grid,
                           'on_release': lambda: self.change_grid_size()}
+                           ]
+        self.color_manager = ColorManager(md_colors)
         Clock.schedule_once(self.my_init)
 
     def my_init(self, dt):
         self.root = self.parent.parent.parent.parent
         self.working_layout.parent.bind(minimum_height=self.working_layout.parent.setter('height'))
-        # self.bind(height=self.adjust_height)
-        # self.working_layout.bind(height=self.adjust_height)
+        self.bind(size=self.adjust_height)
+        self.init_button = self.ids.add_cells
+        # print self.root.ids['toolbar'].dots_menu.items[1]
+
+    def refresh_screen(self, instance, value):
+        # TODO Animations
+        if bool(self.buttons):
+            if self.ids.plus_layout.children:
+                self.ids.plus_layout.remove_widget(self.ids.add_cells)
+        else:
+            self.ids.plus_layout.add_widget(self.init_button)
+
 
     def adjust_height(self, instance, value):
         # TODO Analysis
-        print self.height
-        self.ids.plus_layout.height = self.height - self.ids.add_cells.height - self.root.ids.toolbar.height
-        print self.ids.plus_layout.height
-        print [x for x in instance.walk()]
-        print self.buttons
+        pass
+        # print self.width, self.height
+        # print self.ids.add_cells.pos
+        #print self.height
+        #self.ids.plus_layout.height = self.height - self.ids.add_cells.height - self.root.ids.toolbar.height
+        #print self.ids.plus_layout.height
+        # print [x for x in instance.walk()]
+        # print self.buttons
         #print type(instance) == GridLayout
-        if type(instance) == GridLayout:
-            self.ids.plus_layout.height = self.working_layout.row_default_height
-            self.ids.add_cells.y = self.buttons[sorted(self.buttons.keys())[-1]].y
+        # if type(instance) == GridLayout:
+        #     self.ids.plus_layout.height = self.working_layout.row_default_height
+        #     self.ids.add_cells.y = self.buttons[sorted(self.buttons.keys())[-1]].y
+
+    # def on_touch_down(self, touch):
+    #     print touch
 
     @mainthread
     def on_enter(self, *args):
@@ -76,14 +95,14 @@ class CurrentSession(Screen):
 
     @mainthread
     def on_leave(self, *args):
-        if len(self.root.ids['toolbar'].dots_menu.items) > 2:
+        if len(self.root.ids['toolbar'].dots_menu.items) > 3:
             del self.root.ids['toolbar'].dots_menu.items[1]
 
     def update_dots_menu(self):
-        self.root.ids['toolbar'].dots_menu.items.insert(1, self.menu_item)
+        self.root.ids['toolbar'].dots_menu.items.insert(1, self.menu_items[0])
 
     def refresh_menu_text(self, widget, value):
-        self.menu_item['text'] = 'Show %s grid' % value
+        self.menu_items[0]['text'] = 'Show %s grid' % value
 
     def change_grid_size(self):
         if self.grid != self.available_grid_sizes[0]:
@@ -92,11 +111,11 @@ class CurrentSession(Screen):
         else:
             self.grid = self.available_grid_sizes[1]
             self.n_of_cols = number_of_cols + 1
-        self.root.ids['toolbar'].dots_menu.items[1]=self.menu_item
+        self.root.ids['toolbar'].dots_menu.items[1]=self.menu_items[0]
         self.root.ids['toolbar'].dots_menu.custom_dismiss()
 
 
-    def populate_current_session(self, _widget, app, color_manager):
+    def populate_current_session(self, _widget, app):
         if _widget.active:
             if not self.buttons.has_key(_widget.pass_text) or dev:
                 print 'Adding ' + _widget.pass_text + ' to current session'
@@ -105,7 +124,7 @@ class CurrentSession(Screen):
                                            size_hint=(1,1), on_release=self.add)
                 self.bind(grid=button.setter('grid'))
                 self.buttons[_widget.pass_text] = button
-                button.set_bg_color(get_color_from_hex(color_manager.pop()))
+                button.set_bg_color(get_color_from_hex(self.color_manager.pop()))
                 self.working_layout.add_widget(button)
         else:
             if self.buttons.has_key(_widget.pass_text):
@@ -167,12 +186,17 @@ class ScreenManagement(ScreenManager):
         self.add_widget(CurrentSession())
         self.add_widget(Theming())
         self.bind(current_screen=self.update)
+        Clock.schedule_once(self.my_init)
         # print Window
         # if platform == 'android':
         #     import android
         #     android.map_key(android.KEYCODE_BACK, 1001)
         Window.bind(on_keyboard=self.android_back_click)
         # print self.screens
+
+    def my_init(self, dt):
+        self.root = self.parent.parent.parent
+        self.root.ids['toolbar'].dots_menu.items[2]['on_release'] = lambda: self.clear()
 
     def update(self, screen_manager, screen):
         nav_drawer = self.parent.parent.parent.ids.nav_drawer
@@ -198,10 +222,28 @@ class ScreenManagement(ScreenManager):
             self.add_widget(self.saved_screens[screen_name]())
         self.current = screen_name
 
+    def clear(self):
+        #print self.get_screen('workspace').ids.secondary_screen_manager
+        sm = self.get_screen('workspace').ids.secondary_screen_manager
+        sm.reset = not sm.reset
+        # for screen in sm:
+        #     temp_widgets = [x for x in screen.walk()]
+        #     for temp_widget in temp_widgets:
+        #         if type(temp_widget) == MDCheckbox:
+        #             temp_widget.active = False
+        self.root.ids['toolbar'].dots_menu.custom_dismiss()
+
 
 class SecondScreenManagement(ScreenManager):
+    reset = BooleanProperty(True)
     def __init__(self, **kwargs):
         super(SecondScreenManagement, self).__init__(**kwargs)
-        self.color_manager = ColorManager(md_colors)
+        # self.color_manager = ColorManager(md_colors)
+        Clock.schedule_once(self.my_init)
 
-        # print [x for x in _widget.ids['pick_layout'].walk()]
+    def my_init(self, dt):
+        for screen in self.screens:
+            temp_widgets = [x for x in screen.walk()]
+            for temp_widget in temp_widgets:
+                if type(temp_widget) == MDResetCheckbox:
+                    self.bind(reset=temp_widget.set_active_false)

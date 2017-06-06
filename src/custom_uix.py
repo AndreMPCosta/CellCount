@@ -16,7 +16,7 @@ import kivymd.material_resources as m_res
 from kivymd.button import BaseFlatButton, BasePressedButton, BaseButton
 from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.navigationdrawer import MDNavigationDrawer
-
+from kivymd.selectioncontrols import MDCheckbox
 
 from license import license
 
@@ -69,12 +69,11 @@ Builder.load_string('''
                 text: '[b]' + root.badge_text + '[/b]'
                 color: [1, 1, 1, 1]
                 font_size: sp(12) if root.grid == 'small' else sp(10)
-                opposite_colors: root.opposite_colors            
+                opposite_colors: root.opposite_colors                            
 ''')
 
 class NavDrawer(MDNavigationDrawer):
     pass
-
 
 class DotsMenu(MDDropdownMenu):
     items = ListProperty()
@@ -85,8 +84,10 @@ class DotsMenu(MDDropdownMenu):
              'text': 'Licenses',
              'on_release': lambda: self.menu_license.custom_open(self)},
             {'viewclass': 'MDFlatButton',
-             'text': 'Settings'}  # ,
-            # 'on_release': lambda: app.open_settings()}
+             'text': 'Clear session'},
+            {'viewclass': 'MDFlatButton',
+             'text': 'Settings'}#,
+             #'on_release': lambda: app.open_settings()}
         ]
         self.hor_growth = 'left'
         self.ver_growth = 'down'
@@ -288,3 +289,11 @@ class ColorManager(object):
 
 class Badge(BoxLayout):
     pass
+
+class MDResetCheckbox(MDCheckbox):
+    def __init__(self, **kwargs):
+        super(MDResetCheckbox, self).__init__(**kwargs)
+
+    def set_active_false(self, instance, value):
+        self.active = False
+        #print instance, value
