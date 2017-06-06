@@ -4,7 +4,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
 from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
-from kivy.metrics import sp
 
 from kivymd.navigationdrawer import NavigationLayout
 from custom_uix import DotsMenu, MDColorFlatButton, ColorManager
@@ -54,8 +53,8 @@ class CurrentSession(Screen):
     def my_init(self, dt):
         self.root = self.parent.parent.parent.parent
         self.working_layout.parent.bind(minimum_height=self.working_layout.parent.setter('height'))
-        self.bind(height=self.adjust_height)
-        self.working_layout.bind(height=self.adjust_height)
+        # self.bind(height=self.adjust_height)
+        # self.working_layout.bind(height=self.adjust_height)
 
     def adjust_height(self, instance, value):
         # TODO Analysis
@@ -114,8 +113,6 @@ class CurrentSession(Screen):
                 del self.buttons[_widget.pass_text]
 
     def add(self, button):
-        print button.ids.content.font_size
-        print button.grid
         button.set_is_empty(False)
         button.increment_counter()
 
