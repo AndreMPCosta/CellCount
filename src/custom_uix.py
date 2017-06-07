@@ -189,9 +189,11 @@ class DotsMenu(MDDropdownMenu):
 
     def finalize_dismiss(self, anim, menu):
         self.dismiss()
+        self.disabled = False
         menu.opacity = 1
 
     def custom_dismiss(self):
+        self.disabled = True
         menu = self.ids['md_menu']
         anim = Animation(opacity=0,
                          duration=.5, transition='out_quint')

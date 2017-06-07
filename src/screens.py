@@ -1,4 +1,5 @@
 from kivy.core.window import Window
+from kivy.animation import Animation
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
 from kivy.utils import get_color_from_hex
@@ -7,7 +8,7 @@ from kivy.properties import ObjectProperty, StringProperty, NumericProperty, Dic
 from kivymd.navigationdrawer import NavigationLayout
 from custom_uix import DotsMenu, MDColorFlatButton, ColorManager, MDResetCheckbox
 
-from config import md_colors, number_of_cols
+from config import md_colors, number_of_cols, animation_type
 
 dev = 0
 
@@ -51,14 +52,19 @@ class CurrentSession(Screen):
                           'on_release': lambda: self.change_grid_size()}
                            ]
         self.color_manager = ColorManager(md_colors)
+        self.clear_anim = Animation(x=self.width,
+                                    duration=.5, transition=animation_type)
+        self.bind(width=self.update_anim)
         Clock.schedule_once(self.my_init)
 
     def my_init(self, dt):
         self.root = self.parent.parent.parent.parent
         self.working_layout.parent.bind(minimum_height=self.working_layout.parent.setter('height'))
-        self.bind(size=self.adjust_height)
         self.init_button = self.ids.add_cells
-        # print self.root.ids['toolbar'].dots_menu.items[1]
+
+
+    def update_anim(self, instance, value):
+        self.clear_anim._animated_properties['x'] = self.width
 
     def refresh_screen(self, instance, value):
         # TODO Animations
@@ -135,7 +141,15 @@ class CurrentSession(Screen):
         button.set_is_empty(False)
         button.increment_counter()
 
+    def clear(self):
+        for i, button in enumerate(self.buttons.values()):
+            self.clear_anim.start(button)
+            if i == len(self.buttons) - 1:
+                self.clear_anim.bind(on_complete=self.clear_complete)
 
+    def clear_complete(self, instance, value):
+        sm = self.parent.get_screen('workspace').ids.secondary_screen_manager
+        sm.reset = not sm.reset
         # print button.ids.label_badge.texture_size[0]
         # print button.ids._badge_triangle.right - (button.ids._badge_triangle.canvas.get_group('t')[0].points[2] - button.ids._badge_triangle.canvas.get_group('t')[0].points[1])
         #print button.ids._badge_triangle.top
@@ -224,8 +238,7 @@ class ScreenManagement(ScreenManager):
 
     def clear(self):
         #print self.get_screen('workspace').ids.secondary_screen_manager
-        sm = self.get_screen('workspace').ids.secondary_screen_manager
-        sm.reset = not sm.reset
+        self.get_screen('current_session').clear()
         # for screen in sm:
         #     temp_widgets = [x for x in screen.walk()]
         #     for temp_widget in temp_widgets:

@@ -42,6 +42,8 @@ items_pt = {group_cells_en[0]: [{"Eritroblasto":["Pró-eritroblasto","Basofílic
 
 number_of_cols = 3
 
+animation_type = 'in_circ'
+
 languages={'en':{'group_cells':group_cells_en, 'items': items_en}, 'pt':{'group_cells':group_cells_pt, 'items': items_pt}}
 
 main_colors = {'primary': 'Teal', 'accent': 'Red'}
