@@ -54,7 +54,7 @@ class CurrentSession(Screen):
         self.color_manager = ColorManager(md_colors)
         self.clear_anim = Animation(x=self.width,
                                     duration=.5, transition=animation_type)
-        self.bind(width=self.update_anim)
+        self.bind(width=self.update_anim, size=self.adjust_height)
         Clock.schedule_once(self.my_init)
 
     def my_init(self, dt):
@@ -62,12 +62,23 @@ class CurrentSession(Screen):
         self.working_layout.parent.bind(minimum_height=self.working_layout.parent.setter('height'))
         self.init_button = self.ids.add_cells
 
+    def animate_action_button(self, instance):
+        # print instance.content
+        # anim = Animation(size=(0,0), center_x=instance.center_x, duration=1, transition='in_out_quad')
+        # anim2 = Animation(opacity=0, center_x=instance.center_x, duration=1, transition='in_out_quad')
+        # print instance.center_x, instance.center_y
+        # anim.bind(on_complete= self.teste)
+        # anim.start(instance)
+        # anim2.start(instance.content)
+        self.parent.current = 'workspace'
+
+    def teste(self, x, y):
+        print x, y
 
     def update_anim(self, instance, value):
         self.clear_anim._animated_properties['x'] = self.width
 
     def refresh_screen(self, instance, value):
-        # TODO Animations
         if bool(self.buttons):
             if self.ids.plus_layout.children:
                 self.ids.plus_layout.remove_widget(self.ids.add_cells)

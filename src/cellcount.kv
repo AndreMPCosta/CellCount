@@ -180,6 +180,17 @@ CellCountRoot:
             Band:
             Immature_forms:
             Mature_forms:
+    FloatLayout:
+        id: plus_layout
+        #height: root.height - add_cells.height - root.root.ids
+        MDFloatingActionButton:
+            id: add_cells
+            icon: 'home'
+            #pos_hint: {'center_x': 0.9, 'center_y': .1}
+            pos: root.width - self.width * 1.5, self.height/2
+            opposite_colors: True
+            elevation_normal: 8
+            on_release: app.root.ids.scr_mngr.current = 'current_session'
 #        MDLabel:
 #            text: "Empty Workspace"
 #            theme_text_color: 'Primary'
@@ -216,14 +227,7 @@ CellCountRoot:
 
 <CurrentSession>:
     working_layout: working_layout
-    #s_layout: s_layout
-    #pick_layout: pick_layout
     name: 'current_session'
-#    MDLabel:
-#        text: 'Empty Workspace'
-#        halign: 'center'
-#        pos_hint: {'center_x': 0.5}
-#        theme_text_color: 'Primary'
     ScrollView:
         BoxLayout:
             orientation: 'vertical'
@@ -243,24 +247,11 @@ CellCountRoot:
                 MDFloatingActionButton:
                     id: add_cells
                     icon: 'plus'
-                    #pos_hint: {'center_x': 0.8, 'center_y': .9}
-                    pos: root.width - self.width * 1.5, - root.height + self.height * 2
+                    #pos_hint: {'center_x': 0.9, 'center_y': .1}
+                    pos: root.width - dp(56) * 1.5, - root.height + working_layout.height + dp(56)/2#- root.height + self.height * 2 + working_layout.height
                     opposite_colors: True
                     elevation_normal: 8
-                    on_release: app.root.ids.scr_mngr.current = 'workspace'
-    #            Scatter:
-    #                id: s_layout
-    #            BoxLayout:
-    #                orientation: 'vertical'
-    #                height: dp(72)
-#            FloatLayout:
-#                id: plus_layout
-#                size_hint_y: None
-#                #height: root.height - add_cells.height - root.parent.toolbar.height
-
-
-
-
+                    on_release: root.animate_action_button(self)
 
 <Erithroblast>:
     name: items[group_cells[0]][0].keys()[0]
@@ -332,13 +323,13 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
+#    MDRaisedButton:
+#        id: update_current_session
+#        text: 'Back'
+#        elevation_normal: 2
+#        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
+#        opposite_colors: True
+#        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
 
 <Reticulocyte>:
     index: 1
@@ -364,13 +355,6 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
 
 
 <Myeloblast>:
@@ -397,13 +381,6 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
 
 
 <Promyelocyte>:
@@ -463,13 +440,6 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
 
 <Metamyelocyte>:
     index: 3
@@ -495,13 +465,6 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
 
 <Band>:
     index: 4
@@ -527,13 +490,6 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
 
 <Immature_forms>:
     index: 5
@@ -590,14 +546,6 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-            #size_hint_y: 1 - (len((main_container.children))*0.1)
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
 
 
 <Mature_forms>:
@@ -655,21 +603,5 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
-
-
-#    MDFloatingActionButton:
-#        id: add_cells
-#        icon: 'plus'
-#        opposite_colors: True
-#        elevation_normal: 8
-#        pos_hint: {'center_x': 0.75, 'center_y': 0.1}
-#        on_release: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(root, app, root.parent.color_manager)
 
 <SecondScreenManagement>:
