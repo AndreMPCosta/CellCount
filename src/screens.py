@@ -11,7 +11,8 @@ from kivymd.label import MDLabel
 from kivymd.navigationdrawer import NavigationLayout
 from custom_uix import DotsMenu, MDColorFlatButton, ColorManager, MDResetCheckbox
 
-from config import md_colors, number_of_cols, animation_type
+from kivymd.accordion import MDAccordion, MDAccordionItem, MDAccordionSubItem
+from config import animation_type
 from config import md_colors, number_of_cols, group_cells, items
 
 dev = 0
@@ -19,7 +20,32 @@ dev = 0
 class Workspace(Screen):
     def __init__(self, **kwargs):
         super(Workspace, self).__init__(**kwargs)
-        pass
+        self.secondary_screen_manager = SecondScreenManagement()
+        Clock.schedule_once(self.my_init)
+
+    def my_init(self, dt):
+        main_container = BoxLayout()
+        accordion = MDAccordion(id='accordion', orientation='vertical', size_hint_x= None,
+        width='185dp')
+        for group in self._app.group_cells:
+            accordion_item = MDAccordionItem(title=group, icon='checkbox-blank-circle')
+            accordion.add_widget(accordion_item)
+            for c in self._app.items[group]:
+                if type(c) == dict:
+                    print c.keys()[0]
+                    accordion_sub_item =  MDAccordionSubItem(text=c.keys()[0], parent_item=accordion_item,
+                                                             on_release=self.change_screen)
+                else:
+                    print c
+                    accordion_sub_item = MDAccordionSubItem(text=c, parent_item=accordion_item,
+                                                            on_release=self.change_screen)
+                accordion_item.add_widget(accordion_sub_item)
+        main_container.add_widget(accordion)
+        main_container.add_widget(self.secondary_screen_manager)
+        self.add_widget(main_container)
+
+    def change_screen(self, value):
+        self.secondary_screen_manager.current = value.text
 
 class Theming(Screen):
     def __init__(self, **kwargs):
@@ -115,7 +141,7 @@ class CurrentSession(Screen):
     def on_enter(self, *args):
         if not self.parent.has_screen('workspace'):
             self.parent.add_widget(self.parent.saved_screens['workspace']())
-            self.ssm = self.parent.get_screen('workspace').ids.secondary_screen_manager
+            self.ssm = self.parent.get_screen('workspace').secondary_screen_manager
         self.update_dots_menu()
 
     @mainthread
@@ -281,11 +307,6 @@ class SecondScreenManagement(ScreenManager):
 
     def my_init(self, dt):
         self.generate_screens()
-        # for screen in self.screens:
-        #     temp_widgets = [x for x in screen.walk()]
-        #     for temp_widget in temp_widgets:
-        #         if type(temp_widget) == MDResetCheckbox:
-        #             self.bind(reset=temp_widget.set_active_false)
 
     def generate_screens(self):
         for group in group_cells:
@@ -322,7 +343,7 @@ class SecondScreenManagement(ScreenManager):
                                          'Secondary' if self._app.theme_cls.theme_style == 'Light' else 'Primary')
                     temp_checkbox = MDResetCheckbox(pass_text=temp_items, size_hint=(None, None), size=(dp(48), dp(48)),
                                                     pos_hint={'center_x': 0.25, 'center_y': 0.5})
-                    temp_checkbox.bind(on_state=self.aux_populate)
+                    temp_checkbox.bind(state=self.aux_populate)
                     self.bind(reset=temp_checkbox.set_active_false)
                     temp_box.add_widget(temp_label)
                     temp_box.add_widget(temp_checkbox)

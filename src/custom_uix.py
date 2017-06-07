@@ -10,6 +10,7 @@ from kivy.uix.boxlayout import BoxLayout
 from random import randint
 from copy import deepcopy
 
+from kivymd.list import OneLineListItem
 from kivymd.menu import MDDropdownMenu
 from kivymd.dialog import MDDialog
 import kivymd.material_resources as m_res
@@ -69,7 +70,10 @@ Builder.load_string('''
                 text: '[b]' + root.badge_text + '[/b]'
                 color: [1, 1, 1, 1]
                 font_size: sp(12) if root.grid == 'small' else sp(10)
-                opposite_colors: root.opposite_colors                            
+                opposite_colors: root.opposite_colors         
+                                   
+<MDAccordionSubItemN>:
+    theme_text_color: 'Custom'
 ''')
 
 class NavDrawer(MDNavigationDrawer):
@@ -300,3 +304,10 @@ class MDResetCheckbox(MDCheckbox):
     def set_active_false(self, instance, value):
         self.active = False
         #print instance, value
+
+class MDAccordionSubItemN(OneLineListItem):
+    parent_item = ObjectProperty()
+    def __init__(self, **kwargs):
+        super(MDAccordionSubItemN, self).__init__(**kwargs)
+        if self.parent is not None:
+            self.text_color = self.parent_item.parent.specific_text_color
