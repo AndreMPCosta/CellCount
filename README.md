@@ -9,18 +9,7 @@
 <h4 align="center">This app enables you to count cells quickly and you can customize the workspace in your own way. App was developed using <a href="http://kivy.org" target="_blank">Kivy</a>.</h4>
 
 <p align="center">
-  <a href="http://electron.atom.io">
-    <img src="https://cdn.rawgit.com/amitmerchant1990/electron-markdownify/d0059441c4440c89f9d098b367fd5d987ac044f2/img/electron-badge.svg" alt="Electron">
-  </a>
-  <a href="https://badge.fury.io/js/electron-markdownify">
-    <img src="https://badge.fury.io/js/electron-markdownify.svg"
-         alt="Gitter">
-  </a>
-  <a href="https://gitter.im/amitmerchant1990/electron-markdownify"><img src="https://badges.gitter.im/amitmerchant1990/electron-markdownify.svg"></a>
-  <a href="https://saythanks.io/to/amitmerchant1990">
-      <img src="https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg">
-  </a>
-  <a href="https://www.paypal.me/AmitMerchant">
+  <a href="https://www.paypal.me/andrempcosta">
     <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
   </a>
 </p>
