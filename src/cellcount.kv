@@ -407,14 +407,6 @@ CellCountRoot:
                 pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 on_state: app.root.ids['scr_mngr'].get_screen('current_session').populate_current_session(self, app)
         BoxLayout:
-    MDRaisedButton:
-        id: update_current_session
-        text: 'Back'
-        elevation_normal: 2
-        pos_hint: {'center_x': 0.5, 'center_y': 0.15}
-        opposite_colors: True
-        on_release: app.root.ids['scr_mngr'].change_screen('current_session')
-
 
 <Myelocyte>:
     index: 2

@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">This app enables you to count cells quickly and you can customize the workspace in your own way. App was developed using<a href="http://kivy.org" target="_blank">Kivy</a>.</h4>
+<h4 align="center">This app enables you to count cells quickly and you can customize the workspace in your own way. App was developed using <a href="http://kivy.org" target="_blank">Kivy</a>.</h4>
 
 <p align="center">
   <a href="http://electron.atom.io">
@@ -26,7 +26,7 @@
 </p>
 <br>
 
-![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/img/markdownify.gif)
+![screenshot](https://puu.sh/wdug1/0d28008080.png)
 
 ## Key Features
 
@@ -56,7 +56,7 @@ $> python setup.py install
 
 ## Download
 
-You can grab[here](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0)the latest APK version of CellCount for Android.
+You can grab [here](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0) the latest APK version of CellCount for Android.
 
 ## Credits
 
@@ -67,16 +67,15 @@ This software uses code from two open source packages.
 
 ## Related
 
-[markdownify-web](https://github.com/amitmerchant1990/markdownify-web) - Web version of Markdownify
-
-## You may also like...
-
-- [Pomolectron](https://github.com/amitmerchant1990/pomolectron) - A pomodoro app
-- [Correo](https://github.com/amitmerchant1990/correo) - A menubar/taskbar Gmail App for Windows and macOS
+TODO
 
 #### License
+* MIT
 
-MIT
+  - Kivy is licensed under the terms of the MIT, check the LICENSE file.
+  - The provided fonts DroidSans.ttf and DroidSansMono.ttf are licensed under
+  the terms of the Apache 2.0 License. The license can be found at
+  http://www.apache.org/licenses/LICENSE-2.0
 
 ---
 
