@@ -9,8 +9,9 @@
 <h4 align="center">This app enables you to count cells quickly and you can customize the workspace in your own way. App was developed using <a href="http://kivy.org" target="_blank">Kivy</a>.</h4>
 
 
-[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)]()
+
 [![License](https://img.shields.io/badge/license-MIT%20License-yellowgreen.svg)](https://opensource.org/licenses/MIT)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)]()
 [![donate](https://img.shields.io/badge/$-donate-blue.svg)](https://www.paypal.me/andrempcosta)
 
 <br>
