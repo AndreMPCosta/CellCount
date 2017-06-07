@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from kivy.uix.screenmanager import Screen
+
 group_cells = ["Erythroid", "Myeloid", "Monocytic", "Megakaryocytic", "Limphoid", "Other"]
 
 items = {group_cells[0]: [{"Erithroblast":["Proerythroblast","Basophilic Erythroblast",
@@ -51,4 +53,18 @@ main_colors = {'primary': 'Teal', 'accent': 'Red'}
 md_colors = ['#ef5350', '#5c6bc0', '#26a69a', '#66bb6a', '#d4e157', '#ffa726', '#8d6e63', '#78909c']
 
 
+def generate_screens():
+    #print items["Erythroid"]
+    for group in group_cells:
+        for c in items[group]:
+            #print c
+            #print type(c)
+            if type(c) == dict:
+                temp_screen = Screen(name=c.keys()[0])
+                temp_items = c.values()
+            else:
+                temp_screen = Screen(name=c)
+                temp_items = c
+            print temp_screen, temp_items
 
+#generate_screens()

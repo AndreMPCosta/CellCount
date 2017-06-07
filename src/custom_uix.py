@@ -293,6 +293,7 @@ class Badge(BoxLayout):
     pass
 
 class MDResetCheckbox(MDCheckbox):
+    pass_text = StringProperty()
     def __init__(self, **kwargs):
         super(MDResetCheckbox, self).__init__(**kwargs)
 
