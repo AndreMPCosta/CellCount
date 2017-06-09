@@ -36,7 +36,6 @@ class Workspace(Screen):
                     accordion_sub_item =  MDAccordionSubItem(text=c.keys()[0], parent_item=accordion_item,
                                                              on_release=self.change_screen)
                 else:
-                    print c
                     accordion_sub_item = MDAccordionSubItem(text=c, parent_item=accordion_item,
                                                             on_release=self.change_screen)
                 accordion_item.add_widget(accordion_sub_item)
@@ -54,12 +53,13 @@ class Theming(Screen):
 
 
 class CellCountRoot(NavigationLayout):
+    toolbar = ObjectProperty()
     def __init__(self, **kwargs):
         super(CellCountRoot, self).__init__(**kwargs)
         Clock.schedule_once(self.my_init)
 
     def my_init(self, dt):
-        # print self.ids
+        #self.toolbar.dots_menu = DotsMenu(self)
         self.ids['toolbar'].dots_menu = DotsMenu(self)
 
 

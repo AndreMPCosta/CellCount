@@ -50,4 +50,5 @@ languages={'en':{'group_cells':group_cells_en, 'items': items_en}, 'pt':{'group_
 
 main_colors = {'primary': 'Teal', 'accent': 'Red'}
 
-md_colors = ['#ef5350', '#5c6bc0', '#26a69a', '#66bb6a', '#d4e157', '#ffa726', '#8d6e63', '#78909c']
+md_colors = ['#ef5350', '#5c6bc0', '#26a69a', '#66bb6a', '#d4e157', '#ffa726', '#8d6e63', '#78909c', '#7e57c2',
+             '#ff7043', '#00b8d4', '#006064']
