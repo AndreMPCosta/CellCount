@@ -1,21 +1,32 @@
 from kivy.core.window import Window
 from kivy.animation import Animation
+from kivy.gesture import Gesture, GestureDatabase
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock, mainthread
 from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty, DictProperty, BooleanProperty
-from kivymd.label import MDLabel
+from kivy.utils import platform
 
+from kivymd.label import MDLabel
 from kivymd.navigationdrawer import NavigationLayout
+from kivymd.textfields import MDTextField
+
 from custom_uix import DotsMenu, MDColorFlatButton, ColorManager, MDResetCheckbox
 
 from kivymd.accordion import MDAccordion, MDAccordionItem, MDAccordionSubItem
 from config import animation_type
 from config import md_colors, number_of_cols, group_cells, items
+from src.my_gestures import left_to_right
+
+if platform == 'android' or platform == 'ios':
+    from plyer import vibrator
 
 dev = 0
+
+def vibrate(seconds):
+    vibrator.vibrate(seconds)
 
 class Workspace(Screen):
     def __init__(self, **kwargs):
@@ -87,6 +98,8 @@ class CurrentSession(Screen):
         self.clear_anim = Animation(x=self.width,
                                     duration=.5, transition=animation_type)
         self.bind(width=self.update_anim, size=self.adjust_height)
+        self.gdb = GestureDatabase()
+        self.gdb.add_gesture(left_to_right)
         Clock.schedule_once(self.my_init)
 
     def my_init(self, dt):
@@ -117,6 +130,37 @@ class CurrentSession(Screen):
                 self.ids.plus_layout.remove_widget(self.ids.add_cells)
         else:
             self.ids.plus_layout.add_widget(self.init_button)
+
+
+    def on_touch_down(self, touch):
+        # create an user defined variable and add the touch coordinates
+        touch.ud['gesture_path'] = [(touch.x, touch.y)]
+        super(CurrentSession, self).on_touch_down(touch)
+
+    def on_touch_move(self, touch):
+        if 'gesture_path' in touch.ud:
+            touch.ud['gesture_path'].append((touch.x, touch.y))
+        super(CurrentSession, self).on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        if 'gesture_path' in touch.ud:
+            # create a gesture object
+            gesture = Gesture()
+            # add the movement coordinates
+            gesture.add_stroke(touch.ud['gesture_path'])
+            # normalize so thwu willtolerate size variations
+            gesture.normalize()
+            # minscore to be attained for a match to be true, default 0.3
+            g2 = self.gdb.find(gesture, minscore=0.70)
+            if g2:
+                print 'swipe left'
+
+
+        #print("gesture representation:", self.gdb.gesture_to_str(gesture))
+
+    def finish(self):
+        print 'finishing'
+        self.clear()
 
 
     def adjust_height(self, instance, value):
@@ -185,6 +229,13 @@ class CurrentSession(Screen):
     def add(self, button):
         button.set_is_empty(False)
         button.increment_counter()
+        if self.parent.get_screen('settings').ids.vibration.active:
+            print "I'm vibratin'!"
+        if platform == 'android' or platform == 'ios' and self.parent.get_screen('settings').ids.vibration.active:
+            try:
+                vibrate(.1)
+            except NotImplementedError:
+                print "Can't access the vibrate function"
 
     def clear(self):
         if self.manager.current_screen.name == self.name:
@@ -204,50 +255,15 @@ class CurrentSession(Screen):
         #print button.ids._badge_triangle.top
 
 
-class Erithroblast(Screen):
-    def __init__(self, **kwargs):
-        super(Erithroblast, self).__init__(**kwargs)
-
-class Reticulocyte(Screen):
-    def __init__(self, **kwargs):
-        super(Reticulocyte, self).__init__(**kwargs)
-
-class Myeloblast(Screen):
-    def __init__(self, **kwargs):
-        super(Myeloblast, self).__init__(**kwargs)
-
-class Promyelocyte(Screen):
-    def __init__(self, **kwargs):
-        super(Promyelocyte, self).__init__(**kwargs)
-
-class Myelocyte(Screen):
-    def __init__(self, **kwargs):
-        super(Myelocyte, self).__init__(**kwargs)
-
-class Metamyelocyte(Screen):
-    def __init__(self, **kwargs):
-        super(Metamyelocyte, self).__init__(**kwargs)
-
-class Band(Screen):
-    def __init__(self, **kwargs):
-        super(Band, self).__init__(**kwargs)
-
-class Immature_forms(Screen):
-    def __init__(self, **kwargs):
-        super(Immature_forms, self).__init__(**kwargs)
-
-class Mature_forms(Screen):
-    def __init__(self, **kwargs):
-        super(Mature_forms, self).__init__(**kwargs)
-
 class ScreenManagement(ScreenManager):
     def __init__(self, **kwargs):
         super(ScreenManagement, self).__init__(**kwargs)
         self.saved_screens = {'theming': Theming, 'current_session': CurrentSession,
-                              'workspace': Workspace}
+                              'workspace': Workspace, 'settings': SettingsScreen}
         # self.transition = FallOutTransition()
         self.add_widget(CurrentSession())
         self.add_widget(Theming())
+        self.add_widget(SettingsScreen())
         self.bind(current_screen=self.update)
         Clock.schedule_once(self.my_init)
         # print Window
@@ -263,7 +279,8 @@ class ScreenManagement(ScreenManager):
 
     def update(self, screen_manager, screen):
         nav_drawer = self.parent.parent.parent.ids.nav_drawer
-        nav_drawer.ids[screen.name]._set_active(True, list=nav_drawer)
+        if screen.name != 'settings':
+            nav_drawer.ids[screen.name]._set_active(True, list=nav_drawer)
 
     def android_back_click(self, window, key, *largs):
         if key in [27, 1001, 1073742094, 4]:  # 1073742094:
@@ -300,6 +317,7 @@ class SecondScreenManagement(ScreenManager):
     reset = BooleanProperty(True)
     _app = ObjectProperty()
     _app_root = ObjectProperty()
+
     def __init__(self, **kwargs):
         super(SecondScreenManagement, self).__init__(**kwargs)
         # self.color_manager = ColorManager(md_colors)
@@ -335,17 +353,24 @@ class SecondScreenManagement(ScreenManager):
                         temp_box.add_widget(temp_checkbox)
                         main_container.add_widget(temp_box)
                 else:
-                    #print temp_items
                     temp_box = BoxLayout(orientation='horizontal', size_hint_y=0.1)
-                    temp_label = MDLabel(id='label1', font_style="Caption", halign="left",
-                                         text=temp_items,
-                                         theme_text_color=
-                                         'Secondary' if self._app.theme_cls.theme_style == 'Light' else 'Primary')
-                    temp_checkbox = MDResetCheckbox(pass_text=temp_items, size_hint=(None, None), size=(dp(48), dp(48)),
-                                                    pos_hint={'center_x': 0.25, 'center_y': 0.5})
+                    if temp_items == 'Create other type':
+                        temp_checkbox = MDResetCheckbox(size_hint=(None, None),
+                                                        size=(dp(48), dp(48)),
+                                                        pos_hint={'center_x': 0.25, 'center_y': 0.5})
+                        temp_text_field = MDTextField(color_mode='accent')
+                        temp_text_field.bind(text=temp_checkbox.setter('pass_text'))
+                        temp_box.add_widget(temp_text_field)
+                    else:
+                        temp_label = MDLabel(id='label1', font_style="Caption", halign="left",
+                                             text=temp_items,
+                                             theme_text_color=
+                                             'Secondary' if self._app.theme_cls.theme_style == 'Light' else 'Primary')
+                        temp_box.add_widget(temp_label)
+                        temp_checkbox = MDResetCheckbox(pass_text=temp_items, size_hint=(None, None), size=(dp(48), dp(48)),
+                                                        pos_hint={'center_x': 0.25, 'center_y': 0.5})
                     temp_checkbox.bind(state=self.aux_populate)
                     self.bind(reset=temp_checkbox.set_active_false)
-                    temp_box.add_widget(temp_label)
                     temp_box.add_widget(temp_checkbox)
                     main_container.add_widget(temp_box)
                 main_container.add_widget(BoxLayout())
@@ -357,3 +382,7 @@ class SecondScreenManagement(ScreenManager):
         #self._app_root.ids.scr_mngr.get_screen('current_s')
         self._app_root.ids['scr_mngr'].get_screen('current_session').populate_current_session(instance)
         #print self.reset
+
+class SettingsScreen(Screen):
+    def __init__(self, **kwargs):
+        super(SettingsScreen, self).__init__(**kwargs)

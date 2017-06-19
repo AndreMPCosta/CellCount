@@ -29,12 +29,12 @@ CellCountRoot:
         id: main_box
         Toolbar:
             id: toolbar
-            title: 'CellCount'
+            title: 'CellCount' if scr_mngr.current != 'settings' else 'Settings'
             md_bg_color: app.theme_cls.primary_color
             background_palette: 'Primary'
             background_hue: '500'
-            left_action_items: [['menu', lambda x: root.toggle_nav_drawer()]]
-            right_action_items: [['dots-vertical', lambda x: self.dots_menu.open(self.ids.right_actions)]]
+            left_action_items: [['menu', lambda x: root.toggle_nav_drawer()]] if scr_mngr.current != 'settings' else [['arrow-left', lambda x: scr_mngr.android_back_click(x, key=27)]]
+            right_action_items: [['check', lambda x: scr_mngr.get_screen('current_session').finish()], ['dots-vertical', lambda x: self.dots_menu.open(self.ids.right_actions)]] if scr_mngr.current == 'current_session' else [['dots-vertical', lambda x: self.dots_menu.open(self.ids.right_actions)]] if scr_mngr.current != 'settings' else []
         ScreenManagement:
             id: scr_mngr
 
@@ -69,6 +69,31 @@ CellCountRoot:
 
 <ScreenManagement>:
 
+
+<SettingsScreen>:
+    name: 'settings'
+    tree: 1
+    vibration: vibration
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint: (1, .05)
+        BoxLayout:
+            size_hint: (.85, .1)
+            pos_hint: {'center_x': .5}
+            orientation: 'horizontal'
+            MDLabel:
+                size_hint: (.7, 1)
+                text: 'Vibration'
+                font_size: sp(12)
+            MDSwitch:
+                id: vibration
+                #size_hint: (.3, 1)
+                size_hint: None, None
+                size: dp(36), dp(48)
+                pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+                _active: False
+        BoxLayout:
 
 <ShowLicense>:
     link_label: link_label

@@ -7,6 +7,7 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty, BoundedNumericProperty, NumericProperty
 from kivy.uix.behaviors import DragBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivy.app import App
 from random import randint
 from copy import deepcopy
 
@@ -41,7 +42,7 @@ Builder.load_string('''
         id: content
         text: root._capitalized_text
         font_style: 'Button'
-        size_hint_x: None
+        size_hint_x: 1
         text_size: (None, root.height)
         font_size: sp(12) if root.grid == 'small' else sp(9)
         height: self.texture_size[1]
@@ -90,8 +91,8 @@ class DotsMenu(MDDropdownMenu):
             {'viewclass': 'MDFlatButton',
              'text': 'Clear session'},
             {'viewclass': 'MDFlatButton',
-             'text': 'Settings'}#,
-             #'on_release': lambda: app.open_settings()}
+             'text': 'Settings',
+             'on_release': lambda: self.change_screen('settings')}
         ]
         self.hor_growth = 'left'
         self.ver_growth = 'down'
@@ -203,6 +204,10 @@ class DotsMenu(MDDropdownMenu):
                          duration=.5, transition='out_quint')
         anim.start(menu)
         anim.bind(on_complete=self.finalize_dismiss)
+
+    def change_screen(self, screen):
+        self.dismiss()
+        setattr(App.get_running_app().root.ids.scr_mngr, 'current', screen)
 
 
 class ShowLicense(MDDialog):
