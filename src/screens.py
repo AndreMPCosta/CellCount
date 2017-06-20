@@ -18,7 +18,7 @@ from custom_uix import DotsMenu, MDColorFlatButton, ColorManager, MDResetCheckbo
 from kivymd.accordion import MDAccordion, MDAccordionItem, MDAccordionSubItem
 from config import animation_type
 from config import md_colors, number_of_cols, group_cells, items
-from src.my_gestures import left_to_right
+from my_gestures import left_to_right
 
 if platform == 'android' or platform == 'ios':
     from plyer import vibrator
