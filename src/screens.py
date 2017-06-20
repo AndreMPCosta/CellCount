@@ -232,10 +232,10 @@ class CurrentSession(Screen):
         if self.parent.get_screen('settings').ids.vibration.active:
             print "I'm vibratin'!"
         if platform == 'android' or platform == 'ios' and self.parent.get_screen('settings').ids.vibration.active:
-            try:
-                vibrate(.1)
-            except NotImplementedError:
-                print "Can't access the vibrate function"
+            # try:
+            vibrate(0.1)
+            # except NotImplementedError:
+            #     print "Can't access the vibrate function"
 
     def clear(self):
         if self.manager.current_screen.name == self.name:
