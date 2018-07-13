@@ -21,8 +21,8 @@
 ## Key Features
 
 * A complete list to pick different cell types.
-* Ability to add custom cell types.
-* Store multiple work sessions.
+* Ability to add custom cell types. (WIP)
+* Store multiple work sessions. (WIP)
 * Adjustable grid size.
   - Pick between large and small grid.
 * Dark/Light mode
