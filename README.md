@@ -37,7 +37,7 @@
 This software uses code from two open source packages.
 
 - [Kivy](http://kivy.org)
-- [KivyMD](https://https://gitlab.com/kivymd/KivyMD/)
+- [KivyMD](https://gitlab.com/kivymd/KivyMD/)
 
 ## Related
 
