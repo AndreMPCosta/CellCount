@@ -31,19 +31,6 @@
 * Cross platform
   - Windows, Mac, Linux, iOS and Android ready.
 
-## How To Use
-
-Install it using : `python setup.py install`
-
-*Or*
-
-Clone this repository, and run
-
-```
-$> cd PATH-TO-CELLCOUNT-APP
-$> python setup.py install
-```
-
 
 ## Credits
 
