@@ -44,9 +44,6 @@ $> cd PATH-TO-CELLCOUNT-APP
 $> python setup.py install
 ```
 
-## Download
-
-You can grab [here](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0) the latest APK version of CellCount for Android.
 
 ## Credits
 
